@@ -28,6 +28,8 @@ $ rvm rubygems current
 ```
 * Instalamos Jekykk
 ```bash
-$ sudo gem install jekyll --no-rdoc --no-ri
+$ sudo su
+$ source .rvm/scripts/rvm
+$ gem install jekyll --no-rdoc --no-ri
 ```
 
