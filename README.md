@@ -26,7 +26,7 @@ $ rvm install ruby
 $ rvm use ruby --default
 $ rvm rubygems current
 ```
-* Instalamos Jekykk
+* Instalamos Jekyll
 ```bash
 $ sudo su
 $ source .rvm/scripts/rvm
