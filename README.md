@@ -32,4 +32,9 @@ $ sudo su
 $ source .rvm/scripts/rvm
 $ gem install jekyll --no-rdoc --no-ri
 ```
+## Usando Jekyll
 
+* Siempre, **antes** de usar jekyll:
+```bash
+$ source ~/.rvm/scripts/rvm
+```
