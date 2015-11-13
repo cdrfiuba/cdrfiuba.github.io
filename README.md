@@ -9,9 +9,13 @@ La página web del club
 ```bash
 $ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 ```
+* Descargamos rvm
+```bash
+$ curl -L https://get.rvm.io | bash -s stable
+```
 * Instalamos rvm
 ```bash
-$ \curl -L https://get.rvm.io | bash -s stable
+$ source ~/.rvm/script/rvm
 ```
 * Instalamos las depedencias de rvm
 ```bash
