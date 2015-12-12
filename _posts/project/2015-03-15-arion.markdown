@@ -1,0 +1,20 @@
+---
+layout: project
+title:  "ARION"
+date:   2014-04-25 16:54:46
+author: The Arion Team
+categories:
+- project
+img: arion.jpg
+carousel:
+- single01.jpg
+- single02.jpg
+- single03.jpg
+client: Wonder Corp.
+website: https://github.com/cdrfiuba/arion
+---
+####YOUR PROJECT NAME
+Nuestro velocista más rápido
+
+####Our Proposal
+Ganarles a todos
