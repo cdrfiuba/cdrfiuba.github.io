@@ -1,9 +1,26 @@
 # cdrfiuba.github.io
-La página web del club
+La página web del Club de Robótica, publicada en [clubderobotica.com.ar](http://clubderobotica.com.ar).
 
-## Como instalar Jekyll
+## Instalación para desarrollo local
 
-(sacado de [aca](https://www.garron.me/en/bits/latest-jekyll-ubuntu.html))
+* Instalar [Ruby 2.1.0+](https://www.ruby-lang.org/en/downloads/), y [Git](https://git-scm.com/), y ejecutar:
+```
+git bash
+gem install bundler
+cd {repositorio cdrfiuba.github.io}
+bundle install
+bundle exec jekyll serve
+```
+
+Los cambios se reflejan automáticamente en la carpeta `/_site` (que está ignorada en el repo).
+
+Más información en [Setting Up Your Github pages locally with Jekyll](https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/).
+
+
+
+## Cómo instalar Jekyll manualmente en Linux
+
+(sacado de [acá](https://www.garron.me/en/bits/latest-jekyll-ubuntu.html))
 
 * Agregamos la clave para poder verificar rvm
 ```bash
@@ -33,9 +50,9 @@ $ source .rvm/scripts/rvm
 $ gem install jekyll --no-rdoc --no-ri
 ```
 
-### Instalando en ubuntu 15.10
+### Instalando en Ubuntu 15.10
 
-En ubuntu 15.10 tenemos ruby moderno, por lo que no necesitamos rvm.
+En Ubuntu 15.10 tenemos ruby moderno, por lo que no necesitamos rvm.
 
 * Instalamos ruby:
 ```
@@ -46,7 +63,7 @@ $ sudo apt-get install ruby ruby-dev
 $ sudo gem install jekyll
 ```
 
-## Usando Jekyll
+### Usando Jekyll
 
 * Siempre, **antes** de usar jekyll:
 ```bash
