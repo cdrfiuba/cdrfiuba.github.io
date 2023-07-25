@@ -6,7 +6,7 @@
                 <div class="hline-w"></div>
                 <p>
                     {% for network in site.social %}
-                        <a href="{{ network.url }}" class="btn-social btn-outline"><i class="fa fa-{{ network.title }}"></i></a>
+                        <a href="{{ network[1].url }}" class="btn-social btn-outline"><i class="fa fa-{{ network[1].title }}"></i></a>
                     {% endfor %}
                 </p>
             </div>

@@ -26,13 +26,20 @@ colors:  #in hex code if not noted else
 
 # Social networks usernames. Many more available: google-plus, flickr, linkedin, etc). Shown in footer.
 social:
-  - title: facebook
+  instagram: 
+    title: instagram
+    url: https://www.instagram.com/cdrfiuba
+  facebook:
+    title: facebook
     url: https://www.facebook.com/cdrfiuba
-  - title: twitter
+  twitter: 
+    title: twitter
     url: https://www.twitter.com/cdrfiuba
-  - title: youtube
+  youtube: 
+    title: youtube
     url: https://www.youtube.com/cdrfiuba
-  - title: google-plus-square
+  google-plus-square: 
+    title: google-plus-square
     url: https://plus.google.com/+cdrfiuba
 
 # Postal address (add as many lines as necessary). Shown in footer and on Contact page.
@@ -41,7 +48,8 @@ address:
     - Av. Paseo Colón 850
     - Buenos Aires
     - Argentina.
-email: info@clubderobotica.com.ar
+email: clubderobotica@fi.uba.ar
+site-email: info@clubderobotica.com.ar
 
 ### GENERAL DATA FOR VARIOUS LOCATIONS ###
 
