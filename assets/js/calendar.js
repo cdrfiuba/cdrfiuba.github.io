@@ -21,6 +21,7 @@ const expandEvents = (events) => {
 
 const calendarEvents = expandEvents(window.calendarEvents || []);
 const calendarPeriods = window.calendarPeriods || [];
+const calendarHolidays = window.calendarHolidays || [];
 
 let currentDate = new Date();
 let currentMonth = currentDate.getMonth();
@@ -31,32 +32,36 @@ const monthNames = [
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
 ];
 
-const weekdays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábabado'];
+const weekdays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
 function getPeriodForDate(dateString) {
     const date = new Date(dateString + 'T00:00:00');
-    
+
     // Find matching period
     const period = calendarPeriods.find(period => {
         const startDate = new Date(period.start_date + 'T00:00:00');
         const endDate = new Date(period.end_date + 'T00:00:00');
         return date >= startDate && date <= endDate;
     });
-    
+
     // If it's a lectures period, calculate the week number
     if (period && period.type === 'lectures') {
         const startDate = new Date(period.start_date + 'T00:00:00');
         const diffTime = date.getTime() - startDate.getTime();
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
         const weekNumber = Math.floor(diffDays / 7) + 1;
-        
+
         return {
             ...period,
             name: `Semana ${weekNumber} de cursada`
         };
     }
-    
+
     return period;
+}
+
+function getHolidayForDate(dateString) {
+    return calendarHolidays.includes(dateString);
 }
 
 function createTooltip() {
@@ -109,7 +114,7 @@ function renderCalendar() {
 
     const calendarGrid = document.getElementById('calendar-grid');
     const weekdaysContainer = document.querySelector('.calendar-weekdays');
-    
+
     calendarGrid.innerHTML = '';
     weekdaysContainer.innerHTML = '';
 
@@ -134,10 +139,16 @@ function renderCalendar() {
         const prevMonthDay = new Date(currentYear, currentMonth, -(startingDayOfWeek - 1 - i));
         const prevDateString = `${prevMonthDay.getFullYear()}-${String(prevMonthDay.getMonth() + 1).padStart(2, '0')}-${String(prevMonthDay.getDate()).padStart(2, '0')}`;
         const prevDayEvents = calendarEvents.filter(event => event.date === prevDateString);
+        const prevDayHoliday = getHolidayForDate(prevDateString);
+
+        // Check if previous month day is a holiday (highest priority)
+        if (prevDayHoliday) {
+            dayElement.classList.add('holiday');
+        }
 
         // Check if previous month day is in any period
         const prevPeriod = getPeriodForDate(prevDateString);
-        if (prevPeriod) {
+        if (prevPeriod && !prevDayHoliday) {
             dayElement.classList.add(`period-${prevPeriod.type}`);
         }
 
@@ -160,7 +171,9 @@ function renderCalendar() {
 
         let prevDayContent = `<div class="day-number">${prevMonthDay.getDate()}</div>`;
 
-        if (prevDayEvents.length > 0) {
+        if (prevDayHoliday) {
+            prevDayContent += `<div class="holiday-preview">Feriado</div>`;
+        } else if (prevDayEvents.length > 0) {
             prevDayContent += `<div class="event-preview">${prevDayEvents[0].title}</div>`;
             if (prevDayEvents.length > 1) {
                 prevDayContent += `<div class="event-preview">+${prevDayEvents.length - 1} más</div>`;
@@ -168,12 +181,14 @@ function renderCalendar() {
         }
 
         dayElement.innerHTML = prevDayContent;
-        dayElement.addEventListener('click', () => showEventDetails(prevDateString, prevDayEvents));
+        dayElement.addEventListener('click', () => showEventDetails(prevDateString, prevDayEvents, prevDayHoliday));
 
         // Add hover tooltip for period and event information
         let tooltipContent = '';
 
-        if (prevPeriod) {
+        if (prevDayHoliday) {
+            tooltipContent = `Feriado`;
+        } else if (prevPeriod) {
             tooltipContent = prevPeriod.name;
             if (prevDayEvents.length > 0) {
                 const hasSpecialEvent = prevDayEvents.some(event => event.special_event);
@@ -214,10 +229,16 @@ function renderCalendar() {
 
         const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const dayEvents = calendarEvents.filter(event => event.date === dateString);
+        const dayHoliday = getHolidayForDate(dateString);
+
+        // Check if day is a holiday (highest priority)
+        if (dayHoliday) {
+            dayElement.classList.add('holiday');
+        }
 
         // Check if day is in any period
         const dayPeriod = getPeriodForDate(dateString);
-        if (dayPeriod) {
+        if (dayPeriod && !dayHoliday) {
             dayElement.classList.add(`period-${dayPeriod.type}`);
         }
 
@@ -239,7 +260,9 @@ function renderCalendar() {
 
         let dayContent = `<div class="day-number">${day}</div>`;
 
-        if (dayEvents.length > 0) {
+        if (dayHoliday) {
+            dayContent += `<div class="holiday-preview">Feriado</div>`;
+        } else if (dayEvents.length > 0) {
             dayContent += `<div class="event-preview">${dayEvents[0].title}</div>`;
             if (dayEvents.length > 1) {
                 dayContent += `<div class="event-preview">+${dayEvents.length - 1} más</div>`;
@@ -247,14 +270,15 @@ function renderCalendar() {
         }
 
         dayElement.innerHTML = dayContent;
-        dayElement.addEventListener('click', () => showEventDetails(dateString, dayEvents));
+        dayElement.addEventListener('click', () => showEventDetails(dateString, dayEvents, dayHoliday));
 
         // Add hover tooltip for period information
-        const tooltipPeriod = getPeriodForDate(dateString);
         let tooltipContent = '';
 
-        if (tooltipPeriod) {
-            tooltipContent = tooltipPeriod.name;
+        if (dayHoliday) {
+            tooltipContent = `Feriado`;
+        } else if (dayPeriod) {
+            tooltipContent = dayPeriod.name;
             if (dayEvents.length > 0) {
                 const hasSpecialEvent = dayEvents.some(event => event.special_event);
                 const hasCancelledEvent = dayEvents.some(event => event.cancelled);
@@ -297,10 +321,16 @@ function renderCalendar() {
         const nextMonthDay = new Date(currentYear, currentMonth + 1, i);
         const nextDateString = `${nextMonthDay.getFullYear()}-${String(nextMonthDay.getMonth() + 1).padStart(2, '0')}-${String(nextMonthDay.getDate()).padStart(2, '0')}`;
         const nextDayEvents = calendarEvents.filter(event => event.date === nextDateString);
+        const nextDayHoliday = getHolidayForDate(nextDateString);
+
+        // Check if next month day is a holiday (highest priority)
+        if (nextDayHoliday) {
+            dayElement.classList.add('holiday');
+        }
 
         // Check if next month day is in any period
         const nextPeriod = getPeriodForDate(nextDateString);
-        if (nextPeriod) {
+        if (nextPeriod && !nextDayHoliday) {
             dayElement.classList.add(`period-${nextPeriod.type}`);
         }
 
@@ -323,7 +353,9 @@ function renderCalendar() {
 
         let nextDayContent = `<div class="day-number">${i}</div>`;
 
-        if (nextDayEvents.length > 0) {
+        if (nextDayHoliday) {
+            nextDayContent += `<div class="holiday-preview">Feriado</div>`;
+        } else if (nextDayEvents.length > 0) {
             nextDayContent += `<div class="event-preview">${nextDayEvents[0].title}</div>`;
             if (nextDayEvents.length > 1) {
                 nextDayContent += `<div class="event-preview">+${nextDayEvents.length - 1} más</div>`;
@@ -331,12 +363,14 @@ function renderCalendar() {
         }
 
         dayElement.innerHTML = nextDayContent;
-        dayElement.addEventListener('click', () => showEventDetails(nextDateString, nextDayEvents));
+        dayElement.addEventListener('click', () => showEventDetails(nextDateString, nextDayEvents, nextDayHoliday));
 
         // Add hover tooltip for period and event information
         let tooltipContent = '';
 
-        if (nextPeriod) {
+        if (nextDayHoliday) {
+            tooltipContent = `Feriado`;
+        } else if (nextPeriod) {
             tooltipContent = nextPeriod.name;
             if (nextDayEvents.length > 0) {
                 const hasSpecialEvent = nextDayEvents.some(event => event.special_event);
@@ -371,8 +405,11 @@ function renderCalendar() {
     }
 }
 
-function showEventDetails(date, events) {
-    if (events.length === 0) return;
+function showEventDetails(date, events, holiday = null) {
+    if (!holiday) {
+        holiday = getHolidayForDate(date);
+    }
+    if (events.length === 0 && !holiday) return;
 
     // Hide tooltip when opening event details
     hideTooltip();
@@ -380,11 +417,16 @@ function showEventDetails(date, events) {
     const eventDetails = document.getElementById('event-details');
     const eventContent = document.getElementById('event-content');
 
-    let content = `<h3>Eventos del ${formatDate(date)}</h3>`;
+    let content = `<h3>${holiday ? 'Feriado' : 'Eventos'} del ${formatDate(date)}</h3>`;
+
+    // Show holiday information first if it exists
+    if (holiday) {
+        content += `<div class="holiday-info"><strong>Feriado Nacional</strong></div><br>`;
+    }
 
     // Check if this date is in a special period
     const currentPeriod = getPeriodForDate(date);
-    if (currentPeriod) {
+    if (currentPeriod && !holiday) {
         content += `<div class="period-info"><strong>📅 ${currentPeriod.name}</strong></div><br>`;
     }
 

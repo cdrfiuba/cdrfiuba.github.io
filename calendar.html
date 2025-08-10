@@ -44,4 +44,5 @@ custom_js: calendar
     // Inject calendar data from Jekyll
     window.calendarEvents = {{ site.data.calendar.events | jsonify }};
     window.calendarPeriods = {{ site.data.calendar.periods | jsonify }};
+    window.calendarHolidays = {{ site.data.calendar.holidays | jsonify }};
 </script>

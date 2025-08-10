@@ -83,6 +83,17 @@
     filter: none;
 }
 
+/* Holidays take highest precedence - bright red with gold border */
+.calendar-day.holiday {
+    background-color: #ffecb3 !important;
+    border: 1px solid #ff9800 !important;
+    box-shadow: 0 0 10px rgba(255, 152, 0, 0.5) !important;
+}
+.calendar-day.holiday:hover {
+    background-color: #ffd54f !important;
+    filter: none;
+}
+
 /* Events take precedence over periods */
 .calendar-day.has-event {
     background-color: #c5e3fd !important;
@@ -142,6 +153,15 @@
     color: {{ site.colors.secondary }};
     line-height: 1.2;
     margin-top: 5px;
+}
+
+.holiday-preview {
+    font-size: 10px;
+    color: #e65100;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-top: 5px;
+    text-align: center;
 }
 
 .event-details {
@@ -253,6 +273,16 @@
     border-left: 4px solid {{ site.colors.primary }};
 }
 
+.holiday-info {
+    background-color: #fff3e0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 6px solid #ff9800;
+    text-align: center;
+    font-size: 16px;
+}
+
 .special-badge {
     display: inline-block;
     background-color: #9c27b0;
@@ -269,27 +299,27 @@
         min-height: 60px;
         padding: 4px;
     }
-    
+
     .weekday {
         padding: 8px 4px;
         font-size: 12px;
     }
-    
+
     .day-number {
         font-size: 12px;
         margin-bottom: 2px;
     }
-    
+
     .event-preview {
         font-size: 8px;
         line-height: 1.0;
         margin-top: 2px;
     }
-    
+
     .calendar-header {
         margin-bottom: 10px;
     }
-    
+
     #current-month {
         font-size: 18px;
     }
@@ -300,23 +330,23 @@
         min-height: 50px;
         padding: 2px;
     }
-    
+
     .weekday {
         padding: 6px 2px;
         font-size: 10px;
     }
-    
+
     .day-number {
         font-size: 11px;
         margin-bottom: 1px;
     }
-    
+
     .event-preview {
         font-size: 7px;
         line-height: 1.0;
         margin-top: 1px;
     }
-    
+
     #current-month {
         font-size: 16px;
     }
