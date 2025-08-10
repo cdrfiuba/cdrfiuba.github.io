@@ -1,0 +1,44 @@
+---
+layout: default
+title: "Calendario"
+custom_css: calendar
+custom_js: calendar
+---
+
+<div id="headerwrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h1>Calendario de Actividades</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mtb">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="calendar-container">
+                <div class="calendar-header">
+                    <button id="prev-month" class="btn btn-primary">&lt;</button>
+                    <h2 id="current-month"></h2>
+                    <button id="next-month" class="btn btn-primary">&gt;</button>
+                </div>
+                <div id="calendar-grid"></div>
+            </div>
+
+            <div id="event-details" class="event-details" style="display: none;">
+                <div class="event-modal">
+                    <span class="close">&times;</span>
+                    <div id="event-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Inject calendar data from Jekyll
+    window.calendarEvents = {{ site.data.calendar.events | jsonify }};
+    window.calendarPeriods = {{ site.data.calendar.periods | jsonify }};
+</script>

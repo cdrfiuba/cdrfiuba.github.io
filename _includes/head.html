@@ -14,9 +14,14 @@
     <!-- Custom styles for this template -->
     <link href="{{ "/assets/css/solid-theme.css" | prepend: site.baseurl }}" rel="stylesheet">
     <link href="{{ "/assets/css/font-awesome.min.css" | prepend: site.baseurl }}" rel="stylesheet">
-    
+
     <!-- Custom CSS -->
     <!--<link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">-->
+
+    <!-- Add custom css to specific pages -->
+    {% if page.custom_css %}
+    <link href="{{ "/assets/css/" | append: page.custom_css | append: ".css" | prepend: site.baseurl }}" rel="stylesheet">
+    {% endif %}
 
 
     <!-- Just for debugging purposes. Don't actually copy this line! -->

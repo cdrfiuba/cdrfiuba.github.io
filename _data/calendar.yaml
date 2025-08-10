@@ -1,0 +1,46 @@
+periods:
+  - type: "lectures"
+    start_date: "2025-08-17"
+    end_date: "2025-12-06"
+
+events:
+  - dates:
+      - "2025-08-15"
+      - "2025-08-22"
+      - "2025-08-29"
+      - "2025-09-05"
+      - "2025-09-12"
+      - "2025-09-19"
+      - "2025-09-26"
+      - "2025-10-03"
+      - "2025-10-10"
+      - "2025-10-17"
+      - "2025-10-24"
+      - "2025-10-31"
+      - "2025-11-07"
+      - "2025-11-14"
+      - "2025-11-21"
+      - "2025-11-28"
+      - "2025-12-05"
+    title: "Reunión regular"
+    description: "Reunión semanal del Club"
+    time: "19:00 a 22:00"
+    location: "En el LABi (Sede de Av. Paseo Colón 850 de FIUBA)"
+    type: "meeting"
+
+  # Las reuniones canceladas las escribimos aparte.
+  - date: "2025-08-01"
+    title: "Reunión regular"
+    description: "Reunión semanal del Club"
+    time: "19:00 a 22:00"
+    location: "En el LABi (Sede de Av. Paseo Colón 850 de FIUBA)"
+    type: "meeting"
+    cancelled: true
+
+  - date: "2025-11-08"
+    title: "Noche de los Museos"
+    description: "Presentamos nuestros proyectos en la sede de Las Heras de FIUBA."
+    time: "19:00 a 22:00"
+    location: "Sede de Las Heras de la FIUBA. Primer piso, ala derecha."
+    type: "presentation"
+    special_event: true
