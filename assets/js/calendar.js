@@ -108,14 +108,17 @@ function renderCalendar() {
     monthHeader.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
     const calendarGrid = document.getElementById('calendar-grid');
+    const weekdaysContainer = document.querySelector('.calendar-weekdays');
+    
     calendarGrid.innerHTML = '';
+    weekdaysContainer.innerHTML = '';
 
-    // Add weekday headers
+    // Add weekday headers to separate container
     weekdays.forEach(weekday => {
         const weekdayElement = document.createElement('div');
         weekdayElement.className = 'weekday';
         weekdayElement.textContent = weekday;
-        calendarGrid.appendChild(weekdayElement);
+        weekdaysContainer.appendChild(weekdayElement);
     });
 
     // Get first day of month and number of days
@@ -196,6 +199,9 @@ function renderCalendar() {
         if (tooltipContent) {
             dayElement.addEventListener('mouseenter', (e) => showTooltip(dayElement, tooltipContent, e));
             dayElement.addEventListener('mouseleave', hideTooltip);
+            // Hide tooltip on touch/click for mobile
+            dayElement.addEventListener('touchstart', hideTooltip);
+            dayElement.addEventListener('click', hideTooltip);
         }
 
         calendarGrid.appendChild(dayElement);
@@ -273,13 +279,16 @@ function renderCalendar() {
         if (tooltipContent) {
             dayElement.addEventListener('mouseenter', (e) => showTooltip(dayElement, tooltipContent, e));
             dayElement.addEventListener('mouseleave', hideTooltip);
+            // Hide tooltip on touch/click for mobile
+            dayElement.addEventListener('touchstart', hideTooltip);
+            dayElement.addEventListener('click', hideTooltip);
         }
 
         calendarGrid.appendChild(dayElement);
     }
 
     // Fill remaining cells to complete the last week
-    const totalDaysDisplayed = calendarGrid.children.length - 7; // Subtract weekday headers (prev month + current month days)
+    const totalDaysDisplayed = calendarGrid.children.length; // Total days displayed (prev month + current month days)
     const remainingCells = (7 - (totalDaysDisplayed % 7)) % 7; // Days needed to complete the last week
 
     for (let i = 1; i <= remainingCells; i++) {
@@ -353,6 +362,9 @@ function renderCalendar() {
         if (tooltipContent) {
             dayElement.addEventListener('mouseenter', (e) => showTooltip(dayElement, tooltipContent, e));
             dayElement.addEventListener('mouseleave', hideTooltip);
+            // Hide tooltip on touch/click for mobile
+            dayElement.addEventListener('touchstart', hideTooltip);
+            dayElement.addEventListener('click', hideTooltip);
         }
 
         calendarGrid.appendChild(dayElement);
@@ -361,6 +373,9 @@ function renderCalendar() {
 
 function showEventDetails(date, events) {
     if (events.length === 0) return;
+
+    // Hide tooltip when opening event details
+    hideTooltip();
 
     const eventDetails = document.getElementById('event-details');
     const eventContent = document.getElementById('event-content');
@@ -430,11 +445,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelector('.close').addEventListener('click', () => {
         document.getElementById('event-details').style.display = 'none';
+        hideTooltip();
     });
 
     document.getElementById('event-details').addEventListener('click', (e) => {
         if (e.target.id === 'event-details') {
             document.getElementById('event-details').style.display = 'none';
+            hideTooltip();
+        }
+    });
+
+    // Hide tooltips on any document touch/click (for mobile)
+    document.addEventListener('touchstart', (e) => {
+        if (!e.target.closest('.calendar-day')) {
+            hideTooltip();
         }
     });
 
