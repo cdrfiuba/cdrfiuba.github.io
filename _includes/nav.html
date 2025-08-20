@@ -14,6 +14,7 @@
       <ul class="nav navbar-nav">
         <li {% if page.title == "Home" %}class="active"{% endif %}><a href="{{"/" | prepend: site.baseurl }}">HOME</a></li>
         <li {% if page.title == "Proyectos" %}class="active"{% endif %}><a href="https://github.com/cdrfiuba">PROYECTOS</a></li>
+        <li {% if page.title == "Novedades" %}class="active"{% endif %}><a href="{{"/novedades/" | prepend: site.baseurl }}">NOVEDADES</a></li>
         <li {% if page.title == "Calendario" %}class="active"{% endif %}><a href="{{"/calendar.html" | prepend: site.baseurl }}">CALENDARIO</a></li>
         <li {% if page.title == "Nosotros" %}class="active"{% endif %}><a href="{{"/nosotros/" | prepend: site.baseurl }}">NOSOTROS</a></li>
         <li {% if page.title == "Contacto" %}class="active"{% endif %}><a href="{{"/contacto/" | prepend: site.baseurl }}">CONTACTO</a></li>

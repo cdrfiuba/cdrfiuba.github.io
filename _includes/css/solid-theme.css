@@ -505,3 +505,8 @@ a.anchor{
     top: -80px; 
     visibility: hidden;
 }
+
+/* Reduce spacing for novedades pages */
+.novedades #blue {
+	margin-bottom: 15px !important;
+}

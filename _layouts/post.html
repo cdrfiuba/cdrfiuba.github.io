@@ -4,18 +4,29 @@ layout: default
 
 {% include wrap.html %}
 
-<div class="container mtb">
+<div class="container mtb" style="margin-top: 0px !important; padding-top: 10px;">
     <div class="row">
         <! -- SINGLE POST -->
         <div class="col-lg-8">
             <! -- Blog Post  -->
-            <p><img class="img-responsive" src="{{ "/assets/img/blog/" | prepend: site.baseurl }}{{ page.img }}"></p>
-            <a href="{{ page.url | prepend: site.baseurl }}"><h3 class="ctitle">{{ page.title }}</h3></a>
-            <p><csmall>{{ page.date | date: "%b %-d, %Y" }}. | By: {{ page.author }}</csmall></p>
+            <h1>{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}</h1>
+            <p><csmall>{{ page.date | date: "%b %-d, %Y" }}</csmall></p>
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="{{ "/assets/img/blog/" | prepend: site.baseurl }}{{ page.img }}" style="max-width: 500px; width: 100%; height: auto;">
+            </div>
               
             {{ content }}
 
             <div class="spacing"></div>
+            
+            <!-- Utterances Comments -->
+            <script src="https://utteranc.es/client.js"
+                    repo="cdrfiuba/cdrfiuba.github.io"
+                    issue-term="pathname"
+                    theme="github-light"
+                    crossorigin="anonymous"
+                    async>
+            </script>
             <!-- <h6>SHARE:</h6>
             <p class="share">
                 <a href="#"><i class="fa fa-twitter"></i></a>

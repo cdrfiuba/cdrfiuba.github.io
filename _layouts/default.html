@@ -3,7 +3,7 @@
 
     {% include head.html %}
 
-    <body>
+    <body class="{% if page.title == 'Novedades' %}novedades{% endif %}{% for category in page.categories %} {{ category }}{% endfor %}">
         {% include nav.html %}
 
             {{ content }}
