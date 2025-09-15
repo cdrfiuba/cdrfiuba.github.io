@@ -44,6 +44,10 @@
     filter: none;
 }
 
+.calendar-day.other-month .day-number {
+    color: #999;
+}
+
 
 .calendar-day.has-event:after {
     content: '';
