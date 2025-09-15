@@ -146,6 +146,8 @@
     font-weight: bold;
     margin-bottom: 5px;
     color: #333;
+    position: relative;
+    z-index: 2;
 }
 
 .event-preview {
@@ -153,6 +155,8 @@
     color: {{ site.colors.secondary }};
     line-height: 1.2;
     margin-top: 5px;
+    position: relative;
+    z-index: 2;
 }
 
 .holiday-preview {
@@ -162,6 +166,8 @@
     line-height: 1.2;
     margin-top: 5px;
     text-align: center;
+    position: relative;
+    z-index: 2;
 }
 
 .event-details {
@@ -349,5 +355,35 @@
 
     #current-month {
         font-size: 16px;
+    }
+}
+
+/* Tentative event styling */
+.calendar-day.tentative-event {
+    position: relative;
+}
+
+.tentative-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+    font-weight: bold;
+    color: rgba(255, 193, 7, 0.05);
+    z-index: 0;
+    pointer-events: none;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .tentative-watermark {
+        font-size: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tentative-watermark {
+        font-size: 50px;
     }
 }

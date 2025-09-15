@@ -2,16 +2,23 @@
 const expandEvents = (events) => {
     const expanded = [];
     events.forEach(event => {
-        if (event.dates && Array.isArray(event.dates)) {
-            // Event has multiple dates - create one event per date
-            event.dates.forEach(date => {
-                expanded.push({
-                    ...event,
-                    date: date,
-                    dates: undefined // Remove dates array from individual events
+        let hasDateArray = false;
+        
+        // Look for any property ending with "dates" that contains an array
+        Object.keys(event).forEach(key => {
+            if (key.endsWith('dates') && Array.isArray(event[key])) {
+                hasDateArray = true;
+                event[key].forEach(date => {
+                    expanded.push({
+                        ...event,
+                        date: date,
+                        [key]: undefined // Remove the dates array from individual events
+                    });
                 });
-            });
-        } else {
+            }
+        });
+        
+        if (!hasDateArray) {
             // Single date event - add as is
             expanded.push(event);
         }
@@ -167,9 +174,21 @@ function renderCalendar() {
             if (hasCancelledEvent) {
                 dayElement.classList.add('cancelled-event');
             }
+
+            // Check if any event is tentative
+            const hasTentativeEvent = prevDayEvents.some(event => event.tentative);
+            if (hasTentativeEvent) {
+                dayElement.classList.add('tentative-event');
+            }
         }
 
         let prevDayContent = `<div class="day-number">${prevMonthDay.getDate()}</div>`;
+
+        // Add question mark watermark for tentative events
+        const prevHasTentativeEvent = prevDayEvents.some(event => event.tentative);
+        if (prevHasTentativeEvent) {
+            prevDayContent += `<div class="tentative-watermark">?</div>`;
+        }
 
         if (prevDayHoliday) {
             prevDayContent += `<div class="holiday-preview">Feriado</div>`;
@@ -256,9 +275,21 @@ function renderCalendar() {
             if (hasCancelledEvent) {
                 dayElement.classList.add('cancelled-event');
             }
+
+            // Check if any event is tentative
+            const hasTentativeEvent = dayEvents.some(event => event.tentative);
+            if (hasTentativeEvent) {
+                dayElement.classList.add('tentative-event');
+            }
         }
 
         let dayContent = `<div class="day-number">${day}</div>`;
+
+        // Add question mark watermark for tentative events
+        const hasTentativeEvent = dayEvents.some(event => event.tentative);
+        if (hasTentativeEvent) {
+            dayContent += `<div class="tentative-watermark">?</div>`;
+        }
 
         if (dayHoliday) {
             dayContent += `<div class="holiday-preview">Feriado</div>`;
@@ -349,9 +380,21 @@ function renderCalendar() {
             if (hasCancelledEvent) {
                 dayElement.classList.add('cancelled-event');
             }
+
+            // Check if any event is tentative
+            const hasTentativeEvent = nextDayEvents.some(event => event.tentative);
+            if (hasTentativeEvent) {
+                dayElement.classList.add('tentative-event');
+            }
         }
 
         let nextDayContent = `<div class="day-number">${i}</div>`;
+
+        // Add question mark watermark for tentative events
+        const nextHasTentativeEvent = nextDayEvents.some(event => event.tentative);
+        if (nextHasTentativeEvent) {
+            nextDayContent += `<div class="tentative-watermark">?</div>`;
+        }
 
         if (nextDayHoliday) {
             nextDayContent += `<div class="holiday-preview">Feriado</div>`;
