@@ -510,3 +510,8 @@ a.anchor{
 .novedades #blue {
 	margin-bottom: 15px !important;
 }
+
+/* Reduce spacing for preguntas frecuentes page */
+.preguntas-frecuentes #blue {
+	margin-bottom: 0px !important;
+}

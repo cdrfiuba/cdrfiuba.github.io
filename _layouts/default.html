@@ -3,7 +3,7 @@
 
     {% include head.html %}
 
-    <body class="{% if page.title == 'Novedades' %}novedades{% endif %}{% for category in page.categories %} {{ category }}{% endfor %}">
+    <body class="{% if page.title == 'Novedades' %}novedades{% endif %}{% if page.title == 'Preguntas Frecuentes' %}preguntas-frecuentes{% endif %}{% for category in page.categories %} {{ category }}{% endfor %}">
         {% include nav.html %}
 
             {{ content }}
