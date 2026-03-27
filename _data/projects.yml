@@ -1,0 +1,43 @@
+- title: "ARION"
+  img: arion.jpg
+  website: https://github.com/cdrfiuba/arion
+  description: "Nuestro velocista más rápido"
+  proposal: "Ganarles a todos"
+
+- title: "IMPRESORAS 3D"
+  img: impresora.jpg
+  website: https://github.com/cdrfiuba
+
+- title: "CANGREJO"
+  img: cangrejo.jpg
+  website: https://github.com/cdrfiuba
+
+- title: "MINI SUMO"
+  img: sumos.jpg
+  website: https://github.com/orgs/cdrfiuba/teams/sumos/repositories
+
+- title: "SEGUIDORES DE LINEA"
+  img: seguidores.jpg
+  website: https://github.com/orgs/cdrfiuba/teams/velocistas/repositories
+
+- title: "TERMI"
+  img: termi.jpg
+  website: https://github.com/cdrfiuba/termi_impreso
+
+- title: "MBED CARS"
+  img: mbed.jpg
+  website: https://github.com/cdrfiuba/
+
+- title: "RESOLVEDORES DE LABERINTOS"
+  img: resolvedores.jpg
+  website: https://github.com/orgs/cdrfiuba/teams/laberintos/repositories
+
+- title: "MARCIANO"
+  img: marciano.jpg
+  website: https://github.com/cdrfiuba/marciano
+
+- title: "LEDs!"
+  img: cubo.jpg
+  website: http://www.github.com/cdrfiuba/
+  description: "El cubo de leds del club"
+  proposal: "To show things in the leds"
