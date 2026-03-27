@@ -11,7 +11,7 @@ permalink: /contacto/
         <div class="col-lg-8">
             <h4>¡Unite!</h4>
             <div class="hline" aria-hidden="true"></div>
-              {% for line in site.about %}
+              {% for line in site.data.about %}
                 <p>{{ line }}</p>
               {% endfor %}
               <p>
@@ -23,10 +23,10 @@ permalink: /contacto/
             <h4>Nuestra dirección</h4>
             <div class="hline" aria-hidden="true"></div>
                 <address>
-                    {% for line in site.address.first.lines %}
+                    {% for line in site.data.contact.address.first.lines %}
                         {{ line }} <br>
                     {% endfor %}
-                    Email: <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+                    Email: <a href="mailto:{{ site.data.contact.email }}">{{ site.data.contact.email }}</a>
                 </address>
         </div>
     </div><!-- /row -->
