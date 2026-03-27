@@ -9,13 +9,13 @@
     </button>
     <div class="navbar-collapse collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item {% if page.title == "Home" %}active{% endif %}"><a class="nav-link" href="{{"/" | prepend: site.baseurl }}">HOME</a></li>
-        <li class="nav-item {% if page.title == "Proyectos" %}active{% endif %}"><a class="nav-link" href="https://github.com/cdrfiuba">PROYECTOS</a></li>
-        <li class="nav-item {% if page.title == "Novedades" %}active{% endif %}"><a class="nav-link" href="{{"/novedades/" | prepend: site.baseurl }}">NOVEDADES</a></li>
-        <li class="nav-item {% if page.title == "Calendario" %}active{% endif %}"><a class="nav-link" href="{{"/calendario/" | prepend: site.baseurl }}">CALENDARIO</a></li>
-        <li class="nav-item {% if page.title == "Nosotros" %}active{% endif %}"><a class="nav-link" href="{{"/nosotros/" | prepend: site.baseurl }}">NOSOTROS</a></li>
-        <li class="nav-item {% if page.title == "Preguntas Frecuentes" %}active{% endif %}"><a class="nav-link" href="{{"/preguntas_frecuentes/" | prepend: site.baseurl }}">PREGUNTAS FRECUENTES</a></li>
-        <li class="nav-item {% if page.title == "Contacto" %}active{% endif %}"><a class="nav-link" href="{{"/contacto/" | prepend: site.baseurl }}">CONTACTO</a></li>
+        <li class="nav-item {% if page.title == "Home" %}active{% endif %}"><a class="nav-link" href="{{"/" | prepend: site.baseurl }}" {% if page.title == "Home" %}aria-current="page"{% endif %}>HOME</a></li>
+        <li class="nav-item {% if page.title == "Proyectos" %}active{% endif %}"><a class="nav-link" href="https://github.com/cdrfiuba" rel="noopener noreferrer" {% if page.title == "Proyectos" %}aria-current="page"{% endif %}>PROYECTOS</a></li>
+        <li class="nav-item {% if page.title == "Novedades" %}active{% endif %}"><a class="nav-link" href="{{"/novedades/" | prepend: site.baseurl }}" {% if page.title == "Novedades" %}aria-current="page"{% endif %}>NOVEDADES</a></li>
+        <li class="nav-item {% if page.title == "Calendario" %}active{% endif %}"><a class="nav-link" href="{{"/calendario/" | prepend: site.baseurl }}" {% if page.title == "Calendario" %}aria-current="page"{% endif %}>CALENDARIO</a></li>
+        <li class="nav-item {% if page.title == "Nosotros" %}active{% endif %}"><a class="nav-link" href="{{"/nosotros/" | prepend: site.baseurl }}" {% if page.title == "Nosotros" %}aria-current="page"{% endif %}>NOSOTROS</a></li>
+        <li class="nav-item {% if page.title == "Preguntas Frecuentes" %}active{% endif %}"><a class="nav-link" href="{{"/preguntas_frecuentes/" | prepend: site.baseurl }}" {% if page.title == "Preguntas Frecuentes" %}aria-current="page"{% endif %}>PREGUNTAS FRECUENTES</a></li>
+        <li class="nav-item {% if page.title == "Contacto" %}active{% endif %}"><a class="nav-link" href="{{"/contacto/" | prepend: site.baseurl }}" {% if page.title == "Contacto" %}aria-current="page"{% endif %}>CONTACTO</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>

@@ -6,12 +6,15 @@
     <link rel="shortcut icon" href="{{ "/assets/ico/favicon.ico" | prepend: site.baseurl }}">
 
     <title>{{ site.title }}{% if page.title %} - {{ page.title }}{% endif %}</title>
+    <link rel="canonical" href="{{ page.url | prepend: site.url }}">
 
     <!-- Open Graph -->
     <meta property="og:title" content="{{ page.title | default: site.title }}">
     <meta property="og:description" content="{{ page.excerpt | strip_html | truncate: 160 | default: site.description }}">
     <meta property="og:type" content="{% if page.date %}article{% else %}website{% endif %}">
     <meta property="og:url" content="{{ page.url | prepend: site.url }}">
+    <meta property="og:site_name" content="{{ site.title }}">
+    <meta property="og:locale" content="es_AR">
     {% if page.img %}<meta property="og:image" content="{{ page.img | prepend: site.baseurl | prepend: site.url }}">
     {% else %}<meta property="og:image" content="{{ "/assets/img/logo.png" | prepend: site.baseurl | prepend: site.url }}">
     {% endif %}

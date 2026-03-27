@@ -10,7 +10,7 @@ layout: default
             <h1>{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}</h1>
             <p><time datetime="{{ page.date | date_to_xmlschema }}" class="csmall">{{ page.date | date: "%b %-d, %Y" }}</time></p>
             <div class="post-img-wrap post-img-wrap--detail">
-                <img src="{{ "/assets/img/blog/" | prepend: site.baseurl }}{{ page.img }}" alt="{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}">
+                <img src="{{ "/assets/img/blog/" | prepend: site.baseurl }}{{ page.img }}" alt="{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}" loading="lazy">
             </div>
 
             {{ content }}
