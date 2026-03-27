@@ -1,3 +1,410 @@
 ---
-layout: site
 ---
+/* Site styles */
+
+:root {
+  --color-primary: #00b3fe;
+  --color-primary-rgb: 0, 179, 254;
+  --color-secondary: #384452;
+  --color-link: #428bca;
+  --color-link-hover: #01b2fe;
+  --color-footer-heading: #ffffff;
+  --color-footer-content: #bfc9d3;
+}
+
+/*	################################################################
+	1. GENERAL STRUCTURES
+################################################################# */
+
+body {
+	background: #ffffff;
+	margin: 0;
+	height: 100%;
+	color: var(--color-secondary);
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Raleway', sans-serif;
+	font-weight: 700;
+}
+
+p {
+	padding: 0;
+	margin-bottom: 12px;
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 24px;
+	color: var(--color-secondary);
+	margin-top: 10px;
+}
+
+img {
+	height: auto;
+	max-width: 100%;
+}
+
+ul {
+    margin-left: 0;
+    padding-left: 20px;
+}
+
+ol {
+    margin-left: 0;
+    padding-left: 26px;
+}
+
+a {
+    color: var(--color-link);
+    padding: 0;
+	margin: 0;
+	text-decoration: none;
+	transition: background-color .4s linear, color .4s linear;
+}
+a:hover,
+a:focus {
+  text-decoration: none;
+  color: var(--color-link-hover);
+}
+
+::-moz-selection  {
+	color: #fff;
+	text-shadow:none;
+	background: var(--color-secondary);
+}
+::selection {
+	color: #fff;
+	text-shadow:none;
+	background: var(--color-secondary);
+}
+
+.centered {
+	text-align: center;
+}
+
+/*	################################################################
+	BOOTSTRAP MODIFICATIONS & TWEAKS
+################################################################# */
+.navbar {
+	min-height: 70px;
+	padding-top: 10px;
+	margin-bottom: 0px;
+	background-color: var(--color-secondary);
+	border-color: transparent;
+}
+
+.navbar .navbar-brand {
+	font-family: 'Raleway', sans-serif;
+	font-weight: 900;
+	color: white;
+}
+
+.navbar-nav .nav-link {
+	color: white;
+	font-weight: 700;
+	font-size: 12px;
+}
+
+.navbar-nav .nav-link:hover {
+	color: var(--color-primary);
+}
+
+.navbar-nav .active .nav-link,
+.navbar-nav .active .nav-link:hover,
+.navbar-nav .active .nav-link:focus {
+	color: var(--color-primary);
+	background-color: transparent;
+}
+
+.navbar-toggler {
+	border-color: rgba(255,255,255,0.3);
+}
+
+.navbar-toggler-icon {
+	filter: invert(1);
+}
+
+.btn-theme {
+  color: #fff;
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  margin: 4px;
+}
+.btn-theme:hover,
+.btn-theme:focus,
+.btn-theme:active,
+.btn-theme.active {
+  color: #fff;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+
+.mtb {
+	margin-top: 20px;
+	margin-bottom: 40px;
+}
+
+.mb {
+	margin-bottom: 60px;
+}
+
+.mt {
+	margin-top: 60px;
+}
+
+.hline {
+	border-bottom: 2px solid var(--color-secondary);
+}
+
+.hline-w {
+	border-bottom: 2px solid #ffffff;
+	margin-bottom: 25px;
+}
+
+/* Utility classes */
+.content-tight { margin-top: 0px !important; padding-top: 10px; }
+.content-flush { margin-top: 0px !important; padding-top: 0px; }
+.post-img-wrap { text-align: center; margin: 20px 0; }
+.post-img-wrap img { width: 100%; height: auto; }
+.novedades .post-img-wrap img { max-width: 400px; }
+.post-img-wrap--detail img { max-width: 500px; }
+.wrap-link { color: inherit; text-decoration: none; }
+
+/*	################################################################
+	SITE WRAPS
+################################################################# */
+
+#headerwrap {
+	background-color: var(--color-primary);
+	min-height: 0px;
+	padding-top: 80px;
+	padding-bottom: 30px;
+	text-align: center;
+}
+
+#headerwrap h3, h5 {
+	color: white;
+	font-weight: 400;
+}
+
+#headerwrap h1 {
+	color: white;
+	margin-bottom: 25px;
+}
+
+#headerwrap .img-fluid {
+	margin: 0 auto;
+}
+
+/* Portfolio Wrap */
+#portfoliowrap {
+	padding-top: 60px;
+	margin-bottom: 60px;
+	display: block;
+	text-align: center;
+}
+
+#portfoliowrap h3 {
+	margin-bottom: 25px;
+}
+
+.portfolio {
+	padding:0 !important;
+	margin:0 !important;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.portfolio-item {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+@media (min-width: 401px) {
+	.portfolio-item { width: 50%; }
+}
+@media (min-width: 601px) {
+	.portfolio-item { width: 33.333%; }
+}
+@media (min-width: 951px) {
+	.portfolio-item { width: 25%; }
+}
+@media (min-width: 1201px) {
+	.portfolio-item { width: 20%; }
+}
+
+.portfolio-item .title:before {border-radius:0; display:none}
+.portfolio-item p {margin:0px 0 30px;}
+.portfolio-item h3 {margin:-10px 0 10px; font-size:16px; text-transform:uppercase;}
+
+
+.portfolio-link {
+	display: block;
+	position: relative;
+	overflow: hidden;
+}
+
+.portfolio-link img {
+	display: block;
+	width: 100%;
+}
+
+.portfolio-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(var(--color-primary-rgb), 0.85);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.portfolio-link:hover .portfolio-overlay {
+	opacity: 1;
+}
+
+.portfolio-overlay h3 {
+	color: #fff;
+	margin: 0;
+	padding: 0 10px;
+	font-size: 16px;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+/* Footer */
+#footerwrap {
+	padding-top: 60px;
+	padding-bottom: 60px;
+	background: var(--color-secondary);
+}
+
+#footerwrap p {
+	color: var(--color-footer-content);
+}
+
+#footerwrap h4 {
+	color: var(--color-footer-heading);
+}
+
+#footerwrap .social-icon {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	color: var(--color-footer-content);
+	margin-right: 25px;
+	vertical-align: middle;
+}
+
+#footerwrap a:hover .social-icon {
+	color: var(--color-primary);
+}
+
+/* Contact Page */
+#contactwrap {
+	background: url(../img/contact.jpg) no-repeat center top;
+	margin-top: -60px;
+	padding-top: 0px;
+	text-align: center;
+	background-position: center center;
+	min-height: 400px;
+	width: 100%;
+	background-size: cover;
+}
+
+/*	################################################################
+	PAGE CONFIGURATIONS
+################################################################# */
+/* General Tweaks */
+
+#blue {
+	background: var(--color-primary);
+	margin-top: 60px;
+	margin-bottom: 60px;
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
+#blue h3 {
+	color: white;
+	margin-left: 15px;
+}
+
+
+.ctitle {
+	color: var(--color-primary);
+	font-weight: 700;
+	margin-bottom: 15px;
+}
+
+.csmall {
+	font-size: 12px;
+	color: #b3b3b3;
+}
+
+.spacing {
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+.badge-theme {
+	background: var(--color-primary);
+}
+
+/* Blog Page */
+.popular-posts {
+	margin: 0px;
+	padding-left: 0px;
+	}
+
+.popular-posts li {
+	list-style: none;
+	margin-bottom: 20px;
+	min-height: 70px;
+}
+.popular-posts li a,
+.popular-posts li a:hover {
+	color:#2f2f2f;
+	text-decoration: none;
+	}
+
+.popular-posts li img {
+	float: left;
+	margin-right: 20px;
+	}
+
+.popular-posts li em {
+	font-family: 'Lato', sans-serif;
+	font-size: 12px;
+	color: #b3b3b3;
+	}
+
+.popular-posts p {
+	line-height: normal;
+	margin-bottom: auto;
+}
+
+/* Reduce spacing for novedades pages */
+.novedades #blue {
+	margin-bottom: 15px !important;
+}
+
+/* Reduce spacing for preguntas frecuentes page */
+.preguntas-frecuentes #blue {
+	margin-bottom: 0px !important;
+}
+
+#logo {
+	width: 45%;
+}
+
+.title {
+	font-weight: bold;
+}

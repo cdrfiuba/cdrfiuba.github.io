@@ -4,13 +4,13 @@ layout: default
 
 {% include wrap.html %}
 
-<div class="container mtb" style="margin-top: 0px !important; padding-top: 10px;">
+<div class="container mtb content-tight">
     <div class="row">
         <div class="col-lg-8">
             <h1>{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}</h1>
             <p><span class="csmall">{{ page.date | date: "%b %-d, %Y" }}</span></p>
-            <div style="text-align: center; margin: 20px 0;">
-                <img src="{{ "/assets/img/blog/" | prepend: site.baseurl }}{{ page.img }}" style="max-width: 500px; width: 100%; height: auto;">
+            <div class="post-img-wrap post-img-wrap--detail">
+                <img src="{{ "/assets/img/blog/" | prepend: site.baseurl }}{{ page.img }}">
             </div>
               
             {{ content }}

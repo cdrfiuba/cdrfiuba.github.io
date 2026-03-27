@@ -4,9 +4,10 @@ title: Preguntas Frecuentes
 permalink: /preguntas_frecuentes/
 wrap_title: 'Preguntas Frecuentes'
 custom_css: preguntas_frecuentes
+body_class: preguntas-frecuentes
 ---
 
-<div class="container mtb" style="margin-top: 0px !important; padding-top: 0px;">
+<div class="container mtb content-flush">
 <div class="row">
 <div class="col-lg-12">
 <div class="spacing"></div>

@@ -3,7 +3,7 @@
         {% if include.title %}<h3>{{ include.title }}</h3>{% endif %}
         <div class="recentitems portfolio">
             {% for project in site.data.projects limit:include.limit %}
-                <div class="portfolio-item graphic-design">
+                <div class="portfolio-item">
                     <a href="{{ project.website }}" class="portfolio-link">
                         <img src="{{ "/assets/img/project/" | prepend: site.baseurl }}{{ project.img }}" alt="">
                         <div class="portfolio-overlay">
