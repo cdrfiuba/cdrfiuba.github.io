@@ -22,14 +22,12 @@ permalink: /contacto/
         <div class="col-lg-4">
             <h4>Nuestra dirección</h4>
             <div class="hline"></div>
-                <p>
+                <address>
                     {% for line in site.address.first.lines %}
                         {{ line }} <br>
                     {% endfor %}
-                </p>
-                <p>
-                    Email: <a href="mailto:{{ site.email }}">{{ site.email }}</a><br/>
-                </p>
+                    Email: <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+                </address>
         </div>
     </div><!-- /row -->
 </div><!-- /container -->

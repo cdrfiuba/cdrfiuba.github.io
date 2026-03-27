@@ -6,17 +6,17 @@ layout: default
 
 <div class="container mtb content-tight">
     <div class="row">
-        <div class="col-lg-8">
+        <article class="col-lg-8">
             <h1>{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}</h1>
-            <p><span class="csmall">{{ page.date | date: "%b %-d, %Y" }}</span></p>
+            <p><time datetime="{{ page.date | date_to_xmlschema }}" class="csmall">{{ page.date | date: "%b %-d, %Y" }}</time></p>
             <div class="post-img-wrap post-img-wrap--detail">
-                <img src="{{ "/assets/img/blog/" | prepend: site.baseurl }}{{ page.img }}">
+                <img src="{{ "/assets/img/blog/" | prepend: site.baseurl }}{{ page.img }}" alt="{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}">
             </div>
-              
+
             {{ content }}
 
             <div class="spacing"></div>
-            
+
             <!-- Utterances Comments -->
             <script src="https://utteranc.es/client.js"
                     repo="cdrfiuba/cdrfiuba.github.io"
@@ -25,7 +25,7 @@ layout: default
                     crossorigin="anonymous"
                     async>
             </script>
-        </div><!-- /col-lg-8 -->
+        </article><!-- /col-lg-8 -->
         
         {% include sidebar.html %}
 

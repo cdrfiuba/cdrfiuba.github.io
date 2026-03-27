@@ -37,9 +37,8 @@ social:
 # Postal address (add as many lines as necessary). Shown in footer and on Contact page.
 address:
   - lines:
-    - Av. Paseo Colón 850
-    - Buenos Aires
-    - Argentina.
+    - Av. Paseo Colón 850, 1.° piso
+    - Buenos Aires, Argentina
 email: clubderobotica@fi.uba.ar
 site-email: info@clubderobotica.com.ar
 

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
     {% include head.html %}
 
     <body class="{{ page.body_class }}{% for category in page.categories %} {{ category }}{% endfor %}">
         {% include nav.html %}
 
+        <main>
             {{ content }}
+        </main>
 
         {% include footer.html %}
         {% include js.html %}
