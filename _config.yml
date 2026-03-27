@@ -3,7 +3,6 @@
 # Site settings
 title: Club de Robótica FIUBA
 description: "Porque estudiar puede ser divertido!"
-analytics: UA-31160782-1
 baseurl: "" #important: start with /
 url: "http://www.clubderobotica.com.ar"
 

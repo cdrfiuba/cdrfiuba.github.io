@@ -8,7 +8,7 @@ layout: default
     <div class="row">
         <div class="col-lg-8">
             <h1>{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}</h1>
-            <p><csmall>{{ page.date | date: "%b %-d, %Y" }}</csmall></p>
+            <p><span class="csmall">{{ page.date | date: "%b %-d, %Y" }}</span></p>
             <div style="text-align: center; margin: 20px 0;">
                 <img src="{{ "/assets/img/blog/" | prepend: site.baseurl }}{{ page.img }}" style="max-width: 500px; width: 100%; height: auto;">
             </div>
