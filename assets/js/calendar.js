@@ -200,6 +200,11 @@ function renderCalendar() {
         }
 
         dayElement.innerHTML = prevDayContent;
+        if (prevDayEvents.length > 0 || prevDayHoliday) {
+            dayElement.setAttribute('tabindex', '0');
+            dayElement.setAttribute('role', 'button');
+            dayElement.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showEventDetails(prevDateString, prevDayEvents, prevDayHoliday); } });
+        }
         dayElement.addEventListener('click', () => showEventDetails(prevDateString, prevDayEvents, prevDayHoliday));
 
         // Add hover tooltip for period and event information
@@ -301,6 +306,11 @@ function renderCalendar() {
         }
 
         dayElement.innerHTML = dayContent;
+        if (dayEvents.length > 0 || dayHoliday) {
+            dayElement.setAttribute('tabindex', '0');
+            dayElement.setAttribute('role', 'button');
+            dayElement.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showEventDetails(dateString, dayEvents, dayHoliday); } });
+        }
         dayElement.addEventListener('click', () => showEventDetails(dateString, dayEvents, dayHoliday));
 
         // Add hover tooltip for period information
@@ -406,6 +416,11 @@ function renderCalendar() {
         }
 
         dayElement.innerHTML = nextDayContent;
+        if (nextDayEvents.length > 0 || nextDayHoliday) {
+            dayElement.setAttribute('tabindex', '0');
+            dayElement.setAttribute('role', 'button');
+            dayElement.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showEventDetails(nextDateString, nextDayEvents, nextDayHoliday); } });
+        }
         dayElement.addEventListener('click', () => showEventDetails(nextDateString, nextDayEvents, nextDayHoliday));
 
         // Add hover tooltip for period and event information
@@ -531,6 +546,16 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.close').addEventListener('click', () => {
         document.getElementById('event-details').style.display = 'none';
         hideTooltip();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const eventDetails = document.getElementById('event-details');
+            if (eventDetails.style.display === 'block') {
+                eventDetails.style.display = 'none';
+                hideTooltip();
+            }
+        }
     });
 
     document.getElementById('event-details').addEventListener('click', (e) => {

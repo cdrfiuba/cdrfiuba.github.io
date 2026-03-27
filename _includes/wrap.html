@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row">
             {% if page.categories contains 'novedades' %}
-                <h3><a class="wrap-link" href="{{ "/novedades/" | prepend: site.baseurl }}">{{ page.title }}</a></h3>
+                <h1><a class="wrap-link" href="{{ "/novedades/" | prepend: site.baseurl }}">{{ page.title }}</a></h1>
             {% else %}
-                <h3>{% if page.wrap_title %}{{ page.wrap_title }}{% else %}{{ page.title }}{% endif %}</h3>
+                <h1>{% if page.wrap_title %}{{ page.wrap_title }}{% else %}{{ page.title }}{% endif %}</h1>
             {% endif %}
         </div><!-- /row -->
     </div> <!-- /container -->

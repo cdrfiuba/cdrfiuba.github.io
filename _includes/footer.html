@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <h4>Redes Sociales</h4>
-                <div class="hline-w"></div>
+                <div class="hline-w" aria-hidden="true"></div>
                 <p>
                     {% for network in site.social %}
                         <a href="{{ network[1].url }}">
@@ -15,7 +15,7 @@
             </div>
             <div class="col-lg-6">
                 <h4>Contacto</h4>
-                <div class="hline-w"></div>
+                <div class="hline-w" aria-hidden="true"></div>
                 <address>
                     {% for line in site.address.first.lines %}
                         {{ line }} <br>

@@ -4,9 +4,10 @@
     {% include head.html %}
 
     <body class="{{ page.body_class }}{% for category in page.categories %} {{ category }}{% endfor %}">
+        <a href="#main" class="visually-hidden-focusable">Ir al contenido principal</a>
         {% include nav.html %}
 
-        <main>
+        <main id="main">
             {{ content }}
         </main>
 

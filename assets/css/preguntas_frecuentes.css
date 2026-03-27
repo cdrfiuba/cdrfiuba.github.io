@@ -3,7 +3,7 @@
     margin: 0 auto;
 }
 
-.faq-container h4 {
+.faq-container h2 {
     font-size: 1.3em;
     font-weight: 600;
     color: #333;
@@ -12,11 +12,11 @@
     line-height: 1.4;
 }
 
-.faq-container h4:first-of-type {
+.faq-container h2:first-of-type {
     margin-top: 0px;
 }
 
-.faq-container h4::after {
+.faq-container h2::after {
     content: "";
     display: block;
     border-bottom: 2px solid #e0e0e0;

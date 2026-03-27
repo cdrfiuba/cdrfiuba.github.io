@@ -10,7 +10,7 @@ permalink: /contacto/
     <div class="row">
         <div class="col-lg-8">
             <h4>¡Unite!</h4>
-            <div class="hline"></div>
+            <div class="hline" aria-hidden="true"></div>
               {% for line in site.about %}
                 <p>{{ line }}</p>
               {% endfor %}
@@ -21,7 +21,7 @@ permalink: /contacto/
 
         <div class="col-lg-4">
             <h4>Nuestra dirección</h4>
-            <div class="hline"></div>
+            <div class="hline" aria-hidden="true"></div>
                 <address>
                     {% for line in site.address.first.lines %}
                         {{ line }} <br>
