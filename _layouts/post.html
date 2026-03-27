@@ -6,9 +6,7 @@ layout: default
 
 <div class="container mtb" style="margin-top: 0px !important; padding-top: 10px;">
     <div class="row">
-        <! -- SINGLE POST -->
         <div class="col-lg-8">
-            <! -- Blog Post  -->
             <h1>{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}</h1>
             <p><csmall>{{ page.date | date: "%b %-d, %Y" }}</csmall></p>
             <div style="text-align: center; margin: 20px 0;">
@@ -27,16 +25,9 @@ layout: default
                     crossorigin="anonymous"
                     async>
             </script>
-            <!-- <h6>SHARE:</h6>
-            <p class="share">
-                <a href="#"><i class="fa fa-twitter"></i></a>
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-tumblr"></i></a>
-                <a href="#"><i class="fa fa-google-plus"></i></a>		 		
-            </p> -->
-        </div><! --/col-lg-8 -->
+        </div><!-- /col-lg-8 -->
         
         {% include sidebar.html %}
 
-    </div><! --/row -->
-</div><! --/container -->
+    </div><!-- /row -->
+</div><!-- /container -->
