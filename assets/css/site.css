@@ -35,8 +35,8 @@ p {
 	margin-bottom: 12px;
 	font-family: 'Lato', sans-serif;
 	font-weight: 400;
-	font-size: 14px;
-	line-height: 24px;
+	font-size: 16px;
+	line-height: 1.6;
 	color: var(--color-secondary);
 	margin-top: 10px;
 }
@@ -105,6 +105,7 @@ a:focus {
 	color: white;
 	font-weight: 700;
 	font-size: 12px;
+	text-transform: uppercase;
 }
 
 .navbar-nav .nav-link:hover {
@@ -185,7 +186,8 @@ a:focus {
 	text-align: center;
 }
 
-#headerwrap h3, h5 {
+#headerwrap h3,
+#headerwrap h5 {
 	color: white;
 	font-weight: 400;
 }
@@ -207,7 +209,7 @@ a:focus {
 	text-align: center;
 }
 
-#portfoliowrap h3 {
+#portfoliowrap h2 {
 	margin-bottom: 25px;
 }
 
@@ -236,11 +238,6 @@ a:focus {
 	.portfolio-item { width: 20%; }
 }
 
-.portfolio-item .title:before {border-radius:0; display:none}
-.portfolio-item p {margin:0px 0 30px;}
-.portfolio-item h3 {margin:-10px 0 10px; font-size:16px; text-transform:uppercase;}
-
-
 .portfolio-link {
 	display: block;
 	position: relative;
@@ -266,7 +263,8 @@ a:focus {
 	transition: opacity 0.3s ease;
 }
 
-.portfolio-link:hover .portfolio-overlay {
+.portfolio-link:hover .portfolio-overlay,
+.portfolio-link:focus-visible .portfolio-overlay {
 	opacity: 1;
 }
 
@@ -303,8 +301,16 @@ a:focus {
 	vertical-align: middle;
 }
 
-#footerwrap a:hover .social-icon {
+#footerwrap a:hover .social-icon,
+#footerwrap a:focus-visible .social-icon {
 	color: var(--color-primary);
+}
+
+#footerwrap .footer-credit {
+	margin-top: 40px;
+	margin-bottom: 0;
+	font-size: 13px;
+	text-align: center;
 }
 
 /* Contact Page */
@@ -334,7 +340,7 @@ a:focus {
 
 #blue h1 {
 	color: white;
-	margin-left: 15px;
+	margin-bottom: 0;
 }
 
 

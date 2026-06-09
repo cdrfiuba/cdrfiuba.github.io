@@ -1,0 +1,15 @@
+- title: Inicio
+  url: /
+- title: Proyectos
+  url: https://github.com/cdrfiuba
+  external: true
+- title: Novedades
+  url: /novedades/
+- title: Calendario
+  url: /calendario/
+- title: Nosotros
+  url: /nosotros/
+- title: Preguntas Frecuentes
+  url: /preguntas_frecuentes/
+- title: Contacto
+  url: /contacto/

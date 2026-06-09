@@ -27,7 +27,7 @@ No hace falta anotarse.
 
 Nos reunimos los viernes de 19:00 a 22:00 en el LABi, un laboratorio abierto ubicado en el primer piso de la sede de Paseo Colón de la FIUBA.
 
-En el [calendario](calendar.html) de esta página se puede verificar si nos reunimos también otro día o si una reunión fue cancelada.
+En el [calendario](/calendario/) de esta página se puede verificar si nos reunimos también otro día o si una reunión fue cancelada.
 
 ## ¿Es necesario contar con conocimientos previos?
 

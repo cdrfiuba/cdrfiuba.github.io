@@ -2,26 +2,26 @@
 const expandEvents = (events) => {
     const expanded = [];
     events.forEach(event => {
-        let hasDateArray = false;
-        
         // Look for any property ending with "dates" that contains an array
-        Object.keys(event).forEach(key => {
-            if (key.endsWith('dates') && Array.isArray(event[key])) {
-                hasDateArray = true;
-                event[key].forEach(date => {
-                    expanded.push({
-                        ...event,
-                        date: date,
-                        [key]: undefined // Remove the dates array from individual events
-                    });
-                });
-            }
-        });
-        
-        if (!hasDateArray) {
+        const dateKeys = Object.keys(event).filter(
+            key => key.endsWith('dates') && Array.isArray(event[key])
+        );
+
+        if (dateKeys.length === 0) {
             // Single date event - add as is
             expanded.push(event);
+            return;
         }
+
+        dateKeys.forEach(key => {
+            event[key].forEach(date => {
+                expanded.push({
+                    ...event,
+                    date: date,
+                    [key]: undefined // Remove the dates array from individual events
+                });
+            });
+        });
     });
     return expanded;
 };
@@ -30,9 +30,9 @@ const calendarEvents = expandEvents(window.calendarEvents || []);
 const calendarPeriods = window.calendarPeriods || [];
 const calendarHolidays = window.calendarHolidays || [];
 
-let currentDate = new Date();
-let currentMonth = currentDate.getMonth();
-let currentYear = currentDate.getFullYear();
+const today = new Date();
+let currentMonth = today.getMonth();
+let currentYear = today.getFullYear();
 
 const monthNames = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -40,6 +40,16 @@ const monthNames = [
 ];
 
 const weekdays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+function toDateString(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text == null ? '' : text;
+    return div.innerHTML;
+}
 
 function getPeriodForDate(dateString) {
     const date = new Date(dateString + 'T00:00:00');
@@ -79,7 +89,7 @@ function createTooltip() {
     return tooltip;
 }
 
-function showTooltip(element, content, event) {
+function showTooltip(element, content) {
     let tooltip = document.getElementById('calendar-tooltip');
     if (!tooltip) {
         tooltip = createTooltip();
@@ -115,6 +125,104 @@ function hideTooltip() {
     }
 }
 
+function buildTooltipContent(dayEvents, period, isHoliday) {
+    if (isHoliday) return 'Feriado';
+
+    const eventInfo = [];
+    if (dayEvents.some(event => event.special_event)) eventInfo.push('Evento Especial');
+    if (dayEvents.some(event => event.cancelled)) eventInfo.push('Evento Cancelado');
+
+    if (period) {
+        if (dayEvents.length === 0) return period.name;
+        eventInfo.push(`${dayEvents.length} evento${dayEvents.length > 1 ? 's' : ''}`);
+        return [period.name, ...eventInfo].join(' • ');
+    }
+
+    if (dayEvents.length === 0) return '';
+    if (eventInfo.length === 0) {
+        eventInfo.push(`${dayEvents.length} evento${dayEvents.length > 1 ? 's' : ''}`);
+    }
+    return eventInfo.join(' • ');
+}
+
+function buildDayCell(date, isOtherMonth) {
+    const dayElement = document.createElement('div');
+    dayElement.className = 'calendar-day';
+    if (isOtherMonth) {
+        dayElement.classList.add('other-month');
+    }
+
+    const dateString = toDateString(date);
+    const dayEvents = calendarEvents.filter(event => event.date === dateString);
+    const isHoliday = getHolidayForDate(dateString);
+    const period = getPeriodForDate(dateString);
+
+    if (dateString === toDateString(today)) {
+        dayElement.classList.add('today');
+    }
+
+    // Holidays take highest priority, then periods
+    if (isHoliday) {
+        dayElement.classList.add('holiday');
+    } else if (period) {
+        dayElement.classList.add(`period-${period.type}`);
+    }
+
+    if (dayEvents.length > 0) {
+        dayElement.classList.add('has-event');
+        if (dayEvents.some(event => event.special_event)) {
+            dayElement.classList.add('special-event');
+        }
+        if (dayEvents.some(event => event.cancelled)) {
+            dayElement.classList.add('cancelled-event');
+        }
+        if (dayEvents.some(event => event.tentative)) {
+            dayElement.classList.add('tentative-event');
+        }
+    }
+
+    let dayContent = `<div class="day-number">${date.getDate()}</div>`;
+
+    // Add question mark watermark for tentative events
+    if (dayEvents.some(event => event.tentative)) {
+        dayContent += `<div class="tentative-watermark">?</div>`;
+    }
+
+    if (isHoliday) {
+        dayContent += `<div class="holiday-preview">Feriado</div>`;
+    } else if (dayEvents.length > 0) {
+        dayContent += `<div class="event-preview">${escapeHtml(dayEvents[0].title)}</div>`;
+        if (dayEvents.length > 1) {
+            dayContent += `<div class="event-preview">+${dayEvents.length - 1} más</div>`;
+        }
+    }
+
+    dayElement.innerHTML = dayContent;
+
+    if (dayEvents.length > 0 || isHoliday) {
+        dayElement.setAttribute('tabindex', '0');
+        dayElement.setAttribute('role', 'button');
+        dayElement.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                showEventDetails(dateString, dayEvents, isHoliday);
+            }
+        });
+    }
+    dayElement.addEventListener('click', () => showEventDetails(dateString, dayEvents, isHoliday));
+
+    const tooltipContent = buildTooltipContent(dayEvents, period, isHoliday);
+    if (tooltipContent) {
+        dayElement.addEventListener('mouseenter', () => showTooltip(dayElement, tooltipContent));
+        dayElement.addEventListener('mouseleave', hideTooltip);
+        // Hide tooltip on touch/click for mobile
+        dayElement.addEventListener('touchstart', hideTooltip);
+        dayElement.addEventListener('click', hideTooltip);
+    }
+
+    return dayElement;
+}
+
 function renderCalendar() {
     const monthHeader = document.getElementById('current-month');
     monthHeader.textContent = `${monthNames[currentMonth]} ${currentYear}`;
@@ -133,333 +241,15 @@ function renderCalendar() {
         weekdaysContainer.appendChild(weekdayElement);
     });
 
-    // Get first day of month and number of days
-    const firstDay = new Date(currentYear, currentMonth, 1);
-    const lastDay = new Date(currentYear, currentMonth + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
+    // Leading days from the previous month, current month, and trailing
+    // days from the next month, in full weeks
+    const startOffset = new Date(currentYear, currentMonth, 1).getDay();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
 
-    // Add empty cells for previous month days
-    for (let i = 0; i < startingDayOfWeek; i++) {
-        const dayElement = document.createElement('div');
-        dayElement.className = 'calendar-day other-month';
-        const prevMonthDay = new Date(currentYear, currentMonth, -(startingDayOfWeek - 1 - i));
-        const prevDateString = `${prevMonthDay.getFullYear()}-${String(prevMonthDay.getMonth() + 1).padStart(2, '0')}-${String(prevMonthDay.getDate()).padStart(2, '0')}`;
-        const prevDayEvents = calendarEvents.filter(event => event.date === prevDateString);
-        const prevDayHoliday = getHolidayForDate(prevDateString);
-
-        // Check if previous month day is a holiday (highest priority)
-        if (prevDayHoliday) {
-            dayElement.classList.add('holiday');
-        }
-
-        // Check if previous month day is in any period
-        const prevPeriod = getPeriodForDate(prevDateString);
-        if (prevPeriod && !prevDayHoliday) {
-            dayElement.classList.add(`period-${prevPeriod.type}`);
-        }
-
-        // Handle events for previous month days
-        if (prevDayEvents.length > 0) {
-            dayElement.classList.add('has-event');
-
-            // Check if any event is marked as special
-            const hasSpecialEvent = prevDayEvents.some(event => event.special_event);
-            if (hasSpecialEvent) {
-                dayElement.classList.add('special-event');
-            }
-
-            // Check if any event is cancelled
-            const hasCancelledEvent = prevDayEvents.some(event => event.cancelled);
-            if (hasCancelledEvent) {
-                dayElement.classList.add('cancelled-event');
-            }
-
-            // Check if any event is tentative
-            const hasTentativeEvent = prevDayEvents.some(event => event.tentative);
-            if (hasTentativeEvent) {
-                dayElement.classList.add('tentative-event');
-            }
-        }
-
-        let prevDayContent = `<div class="day-number">${prevMonthDay.getDate()}</div>`;
-
-        // Add question mark watermark for tentative events
-        const prevHasTentativeEvent = prevDayEvents.some(event => event.tentative);
-        if (prevHasTentativeEvent) {
-            prevDayContent += `<div class="tentative-watermark">?</div>`;
-        }
-
-        if (prevDayHoliday) {
-            prevDayContent += `<div class="holiday-preview">Feriado</div>`;
-        } else if (prevDayEvents.length > 0) {
-            prevDayContent += `<div class="event-preview">${prevDayEvents[0].title}</div>`;
-            if (prevDayEvents.length > 1) {
-                prevDayContent += `<div class="event-preview">+${prevDayEvents.length - 1} más</div>`;
-            }
-        }
-
-        dayElement.innerHTML = prevDayContent;
-        if (prevDayEvents.length > 0 || prevDayHoliday) {
-            dayElement.setAttribute('tabindex', '0');
-            dayElement.setAttribute('role', 'button');
-            dayElement.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showEventDetails(prevDateString, prevDayEvents, prevDayHoliday); } });
-        }
-        dayElement.addEventListener('click', () => showEventDetails(prevDateString, prevDayEvents, prevDayHoliday));
-
-        // Add hover tooltip for period and event information
-        let tooltipContent = '';
-
-        if (prevDayHoliday) {
-            tooltipContent = `Feriado`;
-        } else if (prevPeriod) {
-            tooltipContent = prevPeriod.name;
-            if (prevDayEvents.length > 0) {
-                const hasSpecialEvent = prevDayEvents.some(event => event.special_event);
-                const hasCancelledEvent = prevDayEvents.some(event => event.cancelled);
-                if (hasSpecialEvent) {
-                    tooltipContent += ' • Evento Especial';
-                }
-                if (hasCancelledEvent) {
-                    tooltipContent += ' • Evento Cancelado';
-                }
-                tooltipContent += ` • ${prevDayEvents.length} evento${prevDayEvents.length > 1 ? 's' : ''}`;
-            }
-        } else if (prevDayEvents.length > 0) {
-            const hasSpecialEvent = prevDayEvents.some(event => event.special_event);
-            const hasCancelledEvent = prevDayEvents.some(event => event.cancelled);
-            let eventInfo = [];
-            if (hasSpecialEvent) eventInfo.push('Evento Especial');
-            if (hasCancelledEvent) eventInfo.push('Evento Cancelado');
-            if (eventInfo.length === 0) eventInfo.push(`${prevDayEvents.length} evento${prevDayEvents.length > 1 ? 's' : ''}`);
-            tooltipContent = eventInfo.join(' • ');
-        }
-
-        if (tooltipContent) {
-            dayElement.addEventListener('mouseenter', (e) => showTooltip(dayElement, tooltipContent, e));
-            dayElement.addEventListener('mouseleave', hideTooltip);
-            // Hide tooltip on touch/click for mobile
-            dayElement.addEventListener('touchstart', hideTooltip);
-            dayElement.addEventListener('click', hideTooltip);
-        }
-
-        calendarGrid.appendChild(dayElement);
-    }
-
-    // Add days of current month
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayElement = document.createElement('div');
-        dayElement.className = 'calendar-day';
-
-        const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const dayEvents = calendarEvents.filter(event => event.date === dateString);
-        const dayHoliday = getHolidayForDate(dateString);
-
-        // Check if day is a holiday (highest priority)
-        if (dayHoliday) {
-            dayElement.classList.add('holiday');
-        }
-
-        // Check if day is in any period
-        const dayPeriod = getPeriodForDate(dateString);
-        if (dayPeriod && !dayHoliday) {
-            dayElement.classList.add(`period-${dayPeriod.type}`);
-        }
-
-        if (dayEvents.length > 0) {
-            dayElement.classList.add('has-event');
-
-            // Check if any event is marked as special
-            const hasSpecialEvent = dayEvents.some(event => event.special_event);
-            if (hasSpecialEvent) {
-                dayElement.classList.add('special-event');
-            }
-
-            // Check if any event is cancelled
-            const hasCancelledEvent = dayEvents.some(event => event.cancelled);
-            if (hasCancelledEvent) {
-                dayElement.classList.add('cancelled-event');
-            }
-
-            // Check if any event is tentative
-            const hasTentativeEvent = dayEvents.some(event => event.tentative);
-            if (hasTentativeEvent) {
-                dayElement.classList.add('tentative-event');
-            }
-        }
-
-        let dayContent = `<div class="day-number">${day}</div>`;
-
-        // Add question mark watermark for tentative events
-        const hasTentativeEvent = dayEvents.some(event => event.tentative);
-        if (hasTentativeEvent) {
-            dayContent += `<div class="tentative-watermark">?</div>`;
-        }
-
-        if (dayHoliday) {
-            dayContent += `<div class="holiday-preview">Feriado</div>`;
-        } else if (dayEvents.length > 0) {
-            dayContent += `<div class="event-preview">${dayEvents[0].title}</div>`;
-            if (dayEvents.length > 1) {
-                dayContent += `<div class="event-preview">+${dayEvents.length - 1} más</div>`;
-            }
-        }
-
-        dayElement.innerHTML = dayContent;
-        if (dayEvents.length > 0 || dayHoliday) {
-            dayElement.setAttribute('tabindex', '0');
-            dayElement.setAttribute('role', 'button');
-            dayElement.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showEventDetails(dateString, dayEvents, dayHoliday); } });
-        }
-        dayElement.addEventListener('click', () => showEventDetails(dateString, dayEvents, dayHoliday));
-
-        // Add hover tooltip for period information
-        let tooltipContent = '';
-
-        if (dayHoliday) {
-            tooltipContent = `Feriado`;
-        } else if (dayPeriod) {
-            tooltipContent = dayPeriod.name;
-            if (dayEvents.length > 0) {
-                const hasSpecialEvent = dayEvents.some(event => event.special_event);
-                const hasCancelledEvent = dayEvents.some(event => event.cancelled);
-                if (hasSpecialEvent) {
-                    tooltipContent += ' • Evento Especial';
-                }
-                if (hasCancelledEvent) {
-                    tooltipContent += ' • Evento Cancelado';
-                }
-                tooltipContent += ` • ${dayEvents.length} evento${dayEvents.length > 1 ? 's' : ''}`;
-            }
-        } else if (dayEvents.length > 0) {
-            const hasSpecialEvent = dayEvents.some(event => event.special_event);
-            const hasCancelledEvent = dayEvents.some(event => event.cancelled);
-            let eventInfo = [];
-            if (hasSpecialEvent) eventInfo.push('Evento Especial');
-            if (hasCancelledEvent) eventInfo.push('Evento Cancelado');
-            if (eventInfo.length === 0) eventInfo.push(`${dayEvents.length} evento${dayEvents.length > 1 ? 's' : ''}`);
-            tooltipContent = eventInfo.join(' • ');
-        }
-
-        if (tooltipContent) {
-            dayElement.addEventListener('mouseenter', (e) => showTooltip(dayElement, tooltipContent, e));
-            dayElement.addEventListener('mouseleave', hideTooltip);
-            // Hide tooltip on touch/click for mobile
-            dayElement.addEventListener('touchstart', hideTooltip);
-            dayElement.addEventListener('click', hideTooltip);
-        }
-
-        calendarGrid.appendChild(dayElement);
-    }
-
-    // Fill remaining cells to complete the last week
-    const totalDaysDisplayed = calendarGrid.children.length; // Total days displayed (prev month + current month days)
-    const remainingCells = (7 - (totalDaysDisplayed % 7)) % 7; // Days needed to complete the last week
-
-    for (let i = 1; i <= remainingCells; i++) {
-        const dayElement = document.createElement('div');
-        dayElement.className = 'calendar-day other-month';
-        const nextMonthDay = new Date(currentYear, currentMonth + 1, i);
-        const nextDateString = `${nextMonthDay.getFullYear()}-${String(nextMonthDay.getMonth() + 1).padStart(2, '0')}-${String(nextMonthDay.getDate()).padStart(2, '0')}`;
-        const nextDayEvents = calendarEvents.filter(event => event.date === nextDateString);
-        const nextDayHoliday = getHolidayForDate(nextDateString);
-
-        // Check if next month day is a holiday (highest priority)
-        if (nextDayHoliday) {
-            dayElement.classList.add('holiday');
-        }
-
-        // Check if next month day is in any period
-        const nextPeriod = getPeriodForDate(nextDateString);
-        if (nextPeriod && !nextDayHoliday) {
-            dayElement.classList.add(`period-${nextPeriod.type}`);
-        }
-
-        // Handle events for next month days
-        if (nextDayEvents.length > 0) {
-            dayElement.classList.add('has-event');
-
-            // Check if any event is marked as special
-            const hasSpecialEvent = nextDayEvents.some(event => event.special_event);
-            if (hasSpecialEvent) {
-                dayElement.classList.add('special-event');
-            }
-
-            // Check if any event is cancelled
-            const hasCancelledEvent = nextDayEvents.some(event => event.cancelled);
-            if (hasCancelledEvent) {
-                dayElement.classList.add('cancelled-event');
-            }
-
-            // Check if any event is tentative
-            const hasTentativeEvent = nextDayEvents.some(event => event.tentative);
-            if (hasTentativeEvent) {
-                dayElement.classList.add('tentative-event');
-            }
-        }
-
-        let nextDayContent = `<div class="day-number">${i}</div>`;
-
-        // Add question mark watermark for tentative events
-        const nextHasTentativeEvent = nextDayEvents.some(event => event.tentative);
-        if (nextHasTentativeEvent) {
-            nextDayContent += `<div class="tentative-watermark">?</div>`;
-        }
-
-        if (nextDayHoliday) {
-            nextDayContent += `<div class="holiday-preview">Feriado</div>`;
-        } else if (nextDayEvents.length > 0) {
-            nextDayContent += `<div class="event-preview">${nextDayEvents[0].title}</div>`;
-            if (nextDayEvents.length > 1) {
-                nextDayContent += `<div class="event-preview">+${nextDayEvents.length - 1} más</div>`;
-            }
-        }
-
-        dayElement.innerHTML = nextDayContent;
-        if (nextDayEvents.length > 0 || nextDayHoliday) {
-            dayElement.setAttribute('tabindex', '0');
-            dayElement.setAttribute('role', 'button');
-            dayElement.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showEventDetails(nextDateString, nextDayEvents, nextDayHoliday); } });
-        }
-        dayElement.addEventListener('click', () => showEventDetails(nextDateString, nextDayEvents, nextDayHoliday));
-
-        // Add hover tooltip for period and event information
-        let tooltipContent = '';
-
-        if (nextDayHoliday) {
-            tooltipContent = `Feriado`;
-        } else if (nextPeriod) {
-            tooltipContent = nextPeriod.name;
-            if (nextDayEvents.length > 0) {
-                const hasSpecialEvent = nextDayEvents.some(event => event.special_event);
-                const hasCancelledEvent = nextDayEvents.some(event => event.cancelled);
-                if (hasSpecialEvent) {
-                    tooltipContent += ' • Evento Especial';
-                }
-                if (hasCancelledEvent) {
-                    tooltipContent += ' • Evento Cancelado';
-                }
-                tooltipContent += ` • ${nextDayEvents.length} evento${nextDayEvents.length > 1 ? 's' : ''}`;
-            }
-        } else if (nextDayEvents.length > 0) {
-            const hasSpecialEvent = nextDayEvents.some(event => event.special_event);
-            const hasCancelledEvent = nextDayEvents.some(event => event.cancelled);
-            let eventInfo = [];
-            if (hasSpecialEvent) eventInfo.push('Evento Especial');
-            if (hasCancelledEvent) eventInfo.push('Evento Cancelado');
-            if (eventInfo.length === 0) eventInfo.push(`${nextDayEvents.length} evento${nextDayEvents.length > 1 ? 's' : ''}`);
-            tooltipContent = eventInfo.join(' • ');
-        }
-
-        if (tooltipContent) {
-            dayElement.addEventListener('mouseenter', (e) => showTooltip(dayElement, tooltipContent, e));
-            dayElement.addEventListener('mouseleave', hideTooltip);
-            // Hide tooltip on touch/click for mobile
-            dayElement.addEventListener('touchstart', hideTooltip);
-            dayElement.addEventListener('click', hideTooltip);
-        }
-
-        calendarGrid.appendChild(dayElement);
+    for (let i = 0; i < totalCells; i++) {
+        const date = new Date(currentYear, currentMonth, i - startOffset + 1);
+        calendarGrid.appendChild(buildDayCell(date, date.getMonth() !== currentMonth));
     }
 }
 
@@ -485,19 +275,19 @@ function showEventDetails(date, events, holiday = null) {
     // Check if this date is in a special period
     const currentPeriod = getPeriodForDate(date);
     if (currentPeriod && !holiday) {
-        content += `<div class="period-info"><strong>📅 ${currentPeriod.name}</strong></div><br>`;
+        content += `<div class="period-info"><strong>📅 ${escapeHtml(currentPeriod.name)}</strong></div><br>`;
     }
 
     events.forEach(event => {
         content += `
             <div class="event-item" style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
-                <div class="event-type ${event.type}">${getEventTypeLabel(event.type)}</div>
+                <div class="event-type ${escapeHtml(event.type)}">${escapeHtml(getEventTypeLabel(event.type))}</div>
                 ${event.special_event ? '<div class="special-badge">✨ Evento Especial</div>' : ''}
                 ${event.cancelled ? '<div class="cancelled-badge">❌ Evento Cancelado</div>' : ''}
-                <h4 ${event.cancelled ? 'style="text-decoration: line-through; opacity: 0.7;"' : ''}>${event.title}</h4>
-                <p><strong>Hora:</strong> ${event.time}</p>
-                <p><strong>Ubicación:</strong> ${event.location}</p>
-                <p>${event.description}</p>
+                <h4 ${event.cancelled ? 'style="text-decoration: line-through; opacity: 0.7;"' : ''}>${escapeHtml(event.title)}</h4>
+                <p><strong>Hora:</strong> ${escapeHtml(event.time)}</p>
+                <p><strong>Ubicación:</strong> ${escapeHtml(event.location)}</p>
+                ${event.description ? `<p>${escapeHtml(event.description)}</p>` : ''}
             </div>
         `;
     });

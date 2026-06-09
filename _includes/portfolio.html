@@ -1,6 +1,6 @@
 <section id="portfoliowrap">
     <div class="portfolio-centered">
-        {% if include.title %}<h3>{{ include.title }}</h3>{% endif %}
+        {% if include.title %}<h2>{{ include.title }}</h2>{% endif %}
         <div class="recentitems portfolio">
             {% for project in site.data.projects limit:include.limit %}
                 <div class="portfolio-item">

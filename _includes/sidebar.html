@@ -4,7 +4,7 @@
         <ul class="popular-posts">
             {% for post in site.categories['novedades'] limit:4 %} 
                 <li>
-                    <p><a href="{{ post.url }}">{% if post.post_title %}{{ post.post_title }}{% else %}{{ post.title }}{% endif %}</a></p>
+                    <p><a href="{{ post.url | prepend: site.baseurl }}">{% if post.post_title %}{{ post.post_title }}{% else %}{{ post.title }}{% endif %}</a></p>
                     <em>{{ post.date | date: "%b %-d, %Y" }}</em>
                 </li>
             {% endfor %} 

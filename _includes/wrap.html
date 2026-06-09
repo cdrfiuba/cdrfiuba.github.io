@@ -1,11 +1,13 @@
 <header id="blue">
     <div class="container">
         <div class="row">
-            {% if page.categories contains 'novedades' %}
-                <h1><a class="wrap-link" href="{{ "/novedades/" | prepend: site.baseurl }}">{{ page.title }}</a></h1>
-            {% else %}
-                <h1>{% if page.wrap_title %}{{ page.wrap_title }}{% else %}{{ page.title }}{% endif %}</h1>
-            {% endif %}
+            <div class="col-12">
+                {% if page.categories contains 'novedades' %}
+                    <h1><a class="wrap-link" href="{{ "/novedades/" | prepend: site.baseurl }}">{{ page.title }}</a></h1>
+                {% else %}
+                    <h1>{% if page.wrap_title %}{{ page.wrap_title }}{% else %}{{ page.title }}{% endif %}</h1>
+                {% endif %}
+            </div>
         </div><!-- /row -->
     </div> <!-- /container -->
 </header><!-- /blue -->

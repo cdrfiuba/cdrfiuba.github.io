@@ -2,12 +2,14 @@
 
 # Site settings
 title: Club de Robótica FIUBA
-description: "Porque estudiar puede ser divertido!"
+description: "¡Porque estudiar puede ser divertido!"
 baseurl: "" #important: start with /
 url: "https://www.clubderobotica.com.ar"
 
 # Build settings
 markdown: kramdown
+plugins:
+  - jekyll-sitemap
 permalink: /:categories/:year/:month/:title
 excerpt_separator: <!--more--> #use this in posts to define how long the excerpt of the post (that is shown on the Blog page) is
 
