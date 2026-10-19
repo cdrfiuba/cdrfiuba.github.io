@@ -1,95 +1,77 @@
 ---
 layout: default
-title: "Calendario"
+title: Calendario de Actividades
 permalink: /calendario/
 custom_css: calendar
 custom_js: calendar
 ---
 
-<header id="headerwrap">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-                <h1>Calendario de Actividades</h1>
-            </div>
-        </div>
-    </div>
-</header>
+{% include wrap.html %}
 
 <div class="container mtb">
-    <div class="row">
-        <div class="col-lg-12">
-            <div id="calendar-container">
-                <div class="calendar-header">
-                    <button id="prev-month" class="btn btn-theme" aria-label="Mes anterior">&lt;</button>
-                    <h2 id="current-month"></h2>
-                    <button id="next-month" class="btn btn-theme" aria-label="Mes siguiente">&gt;</button>
-                </div>
-                <div class="calendar-wrapper">
-                    <div class="calendar-weekdays"></div>
-                    <div id="calendar-grid"></div>
-                </div>
-            </div>
+    <div class="calendar-header">
+        <button id="prev-month" class="btn btn-theme" aria-label="Mes anterior">&lt;</button>
+        <h2 id="current-month"></h2>
+        <button id="next-month" class="btn btn-theme" aria-label="Mes siguiente">&gt;</button>
+    </div>
+    <div class="calendar-weekdays" aria-hidden="true">
+        {% assign weekdays = "Domingo,Lunes,Martes,Miércoles,Jueves,Viernes,Sábado" | split: "," %}
+        {% for day in weekdays %}<div class="weekday"><span class="weekday-long">{{ day }}</span><span class="weekday-short">{{ day | slice: 0, 3 }}</span></div>{% endfor %}
+    </div>
+    <div id="calendar-grid"></div>
 
-            <div id="event-details" class="event-details" style="display: none;" role="dialog" aria-label="Detalles del evento">
-                <div class="event-modal">
-                    <button class="close" aria-label="Cerrar">&times;</button>
-                    <div id="event-content"></div>
-                </div>
-            </div>
-
-            <noscript>
-                {% assign calendar_year = "" %}
-                {% for event in site.data.calendar.events %}
-                    {% if calendar_year != "" %}{% break %}{% endif %}
-                    {% if event.dates %}{% assign calendar_year = event.dates.first | slice: 0, 4 %}
-                    {% elsif event.date %}{% assign calendar_year = event.date | slice: 0, 4 %}
-                    {% elsif event.tentative_dates %}{% assign calendar_year = event.tentative_dates.first | slice: 0, 4 %}
-                    {% elsif event.confirmed_tentative_dates %}{% assign calendar_year = event.confirmed_tentative_dates.first | slice: 0, 4 %}
-                    {% endif %}
-                {% endfor %}
-                {% assign month_names = "Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre" | split: "," %}
-                {% assign weekday_padded = "Domingo&nbsp;&nbsp;,Lunes&nbsp;&nbsp;&nbsp;&nbsp;,Martes&nbsp;&nbsp;&nbsp;,Miércoles,Jueves&nbsp;&nbsp;&nbsp;,Viernes&nbsp;&nbsp;,Sábado&nbsp;&nbsp;&nbsp;" | split: "," %}
-
-                <h2>Eventos {{ calendar_year }}</h2>
-
-                {% for m in (1..12) %}
-                    {% assign m_str = m | append: "" | prepend: "00" | slice: -2, 2 %}
-                    {% assign month_prefix = calendar_year | append: "-" | append: m_str | append: "-" %}
-
-                    {% capture month_events %}
-                    {% for day in (1..31) %}
-                        {% assign d_str = day | append: "" | prepend: "00" | slice: -2, 2 %}
-                        {% assign full_date = month_prefix | append: d_str %}
-                        {% for event in site.data.calendar.events %}
-                            {% unless event.cancelled %}
-                                {% assign found = false %}
-                                {% if event.date == full_date %}{% assign found = true %}{% endif %}
-                                {% if event.dates contains full_date %}{% assign found = true %}{% endif %}
-                                {% if event.tentative_dates contains full_date %}{% assign found = true %}{% endif %}
-                                {% if event.confirmed_tentative_dates contains full_date %}{% assign found = true %}{% endif %}
-                                {% if found %}
-{% assign wday = full_date | date: "%w" | plus: 0 %}<li>{{ weekday_padded[wday] }}&nbsp;{% if day < 10 %}&nbsp;{% endif %}<strong>{{ day }}</strong>: {{ event.title }}{% if event.tentative %} (tentativa){% endif %}{% if event.special_event %} &#9733;{% endif %} — {{ event.time }}, {{ event.location }}{% if event.description != "" %}. {{ event.description }}{% endif %}</li>
-                                {% endif %}
-                            {% endunless %}
-                        {% endfor %}
-                    {% endfor %}
-                    {% endcapture %}
-
-                    {% assign month_stripped = month_events | strip %}
-                    {% if month_stripped != "" %}
-                    <h3>{{ month_names[forloop.index0] }} {{ calendar_year }}</h3>
-                    <ul>{{ month_events }}</ul>
-                    {% endif %}
-                {% endfor %}
-            </noscript>
+    <div id="event-details" class="event-details" role="dialog" aria-modal="true" aria-label="Detalles del evento" hidden>
+        <div class="event-modal">
+            <button class="close" aria-label="Cerrar">&times;</button>
+            <div id="event-content"></div>
         </div>
     </div>
+
+    <noscript>
+        {% assign calendar_year = "" %}
+        {% for event in site.data.calendar.events %}
+            {% if calendar_year != "" %}{% break %}{% endif %}
+            {% if event.dates %}{% assign calendar_year = event.dates.first | slice: 0, 4 %}
+            {% elsif event.date %}{% assign calendar_year = event.date | slice: 0, 4 %}
+            {% elsif event.tentative_dates %}{% assign calendar_year = event.tentative_dates.first | slice: 0, 4 %}
+            {% elsif event.confirmed_tentative_dates %}{% assign calendar_year = event.confirmed_tentative_dates.first | slice: 0, 4 %}
+            {% endif %}
+        {% endfor %}
+        {% assign month_names = "Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre" | split: "," %}
+        {% assign weekday_padded = "Domingo&nbsp;&nbsp;,Lunes&nbsp;&nbsp;&nbsp;&nbsp;,Martes&nbsp;&nbsp;&nbsp;,Miércoles,Jueves&nbsp;&nbsp;&nbsp;,Viernes&nbsp;&nbsp;,Sábado&nbsp;&nbsp;&nbsp;" | split: "," %}
+
+        <h2>Eventos {{ calendar_year }}</h2>
+
+        {% for m in (1..12) %}
+            {% assign m_str = m | append: "" | prepend: "00" | slice: -2, 2 %}
+            {% assign month_prefix = calendar_year | append: "-" | append: m_str | append: "-" %}
+
+            {% capture month_events %}
+            {% for day in (1..31) %}
+                {% assign d_str = day | append: "" | prepend: "00" | slice: -2, 2 %}
+                {% assign full_date = month_prefix | append: d_str %}
+                {% for event in site.data.calendar.events %}
+                    {% unless event.cancelled %}
+                        {% assign found = false %}
+                        {% if event.date == full_date %}{% assign found = true %}{% endif %}
+                        {% if event.dates contains full_date %}{% assign found = true %}{% endif %}
+                        {% if event.tentative_dates contains full_date %}{% assign found = true %}{% endif %}
+                        {% if event.confirmed_tentative_dates contains full_date %}{% assign found = true %}{% endif %}
+                        {% if found %}
+{% assign wday = full_date | date: "%w" | plus: 0 %}<li>{{ weekday_padded[wday] }}&nbsp;{% if day < 10 %}&nbsp;{% endif %}<strong>{{ day }}</strong>: {{ event.title }}{% if event.tentative %} (tentativa){% endif %}{% if event.special_event %} &#9733;{% endif %} — {{ event.time }}, {{ event.location }}{% if event.description != "" %}. {{ event.description }}{% endif %}</li>
+                        {% endif %}
+                    {% endunless %}
+                {% endfor %}
+            {% endfor %}
+            {% endcapture %}
+
+            {% assign month_stripped = month_events | strip %}
+            {% if month_stripped != "" %}
+            <h3>{{ month_names[forloop.index0] }} {{ calendar_year }}</h3>
+            <ul>{{ month_events }}</ul>
+            {% endif %}
+        {% endfor %}
+    </noscript>
 </div>
 
-<script>
-    // Inject calendar data from Jekyll
-    window.calendarEvents = {{ site.data.calendar.events | jsonify }};
-    window.calendarPeriods = {{ site.data.calendar.periods | jsonify }};
-    window.calendarHolidays = {{ site.data.calendar.holidays | jsonify }};
-</script>
+<script type="application/json" id="calendar-data">{{ site.data.calendar | jsonify }}</script>

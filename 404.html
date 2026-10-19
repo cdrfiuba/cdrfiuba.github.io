@@ -6,10 +6,6 @@ sitemap: false
 ---
 
 <div class="container mtb">
-    <div class="row">
-        <div class="col-lg-8">
-            <p>La página que buscás no existe o fue movida.</p>
-            <p><a href="{{ "/" | prepend: site.baseurl }}" class="btn btn-theme">Volver al inicio</a></p>
-        </div>
-    </div><!-- /row -->
-</div><!-- /container -->
+    <p>La página que buscás no existe o fue movida.</p>
+    <p><a href="{{ '/' | relative_url }}" class="btn btn-theme">Volver al inicio</a></p>
+</div>

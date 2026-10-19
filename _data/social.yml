@@ -1,15 +1,16 @@
-github:
-  title: github
+# Cada red necesita un ícono en _includes/icons/<name>.svg
+- name: github
+  title: GitHub
   url: https://github.com/cdrfiuba
-instagram:
-  title: instagram
+- name: instagram
+  title: Instagram
   url: https://www.instagram.com/cdrfiuba
-facebook:
-  title: facebook
+- name: facebook
+  title: Facebook
   url: https://www.facebook.com/cdrfiuba
-twitter:
-  title: twitter
-  url: https://www.twitter.com/cdrfiuba
-youtube:
-  title: youtube
+- name: x
+  title: X
+  url: https://x.com/cdrfiuba
+- name: youtube
+  title: YouTube
   url: https://www.youtube.com/cdrfiuba

@@ -1,17 +1,10 @@
 <header id="headerwrap">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8 offset-lg-2 himg">
-                <h1 class="visually-hidden">Club de Robótica FIUBA</h1>
-                <picture>
-                    <source srcset="{{ "/assets/img/logo.svg" | prepend: site.baseurl }}" type="image/svg+xml">
-                    <img src="{{ "/assets/img/logo.png" | prepend: site.baseurl }}" class="img-fluid" id="logo" alt="CDR FIUBA" width="300" height="300">
-                </picture>
-            </div>
-            <div class="col-lg-8 offset-lg-2">
-                <h3><span class="title">Facultad de Ingeniería</span></h3>
-                <h3><span class="title">Universidad de Buenos Aires</span></h3>
-            </div>
-        </div><!-- /row -->
-    </div> <!-- /container -->
-</header><!-- /headerwrap -->
+        <h1 class="visually-hidden">{{ site.title }}</h1>
+        <picture>
+            <source srcset="{{ '/assets/img/logo.svg' | relative_url }}" type="image/svg+xml">
+            <img src="{{ '/assets/img/logo.png' | relative_url }}" id="logo" alt="CDR FIUBA" width="300" height="300">
+        </picture>
+        <p class="subtitle">Facultad de Ingeniería<br>Universidad de Buenos Aires</p>
+    </div>
+</header>

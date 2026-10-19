@@ -1,0 +1,4 @@
+<address>
+    {% for line in site.data.contact.address %}{{ line }}<br>{% endfor %}
+    Email: <a href="mailto:{{ site.data.contact.email }}">{{ site.data.contact.email }}</a>
+</address>

@@ -1,23 +1,22 @@
 ---
 layout: default
 ---
-
 {% include wrap.html %}
 
-<div class="container mtb content-tight">
+<div class="container mtb">
     <div class="row">
         <article class="col-lg-8">
-            <h1>{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}</h1>
-            <p><time datetime="{{ page.date | date_to_xmlschema }}" class="csmall">{{ page.date | date: "%b %-d, %Y" }}</time></p>
-            <div class="post-img-wrap post-img-wrap--detail">
-                <img src="{{ "/assets/img/blog/" | prepend: site.baseurl }}{{ page.img }}" alt="{% if page.post_title %}{{ page.post_title }}{% else %}{{ page.title }}{% endif %}" loading="lazy">
+            <h1>{{ page.title }}</h1>
+            <p><time datetime="{{ page.date | date_to_xmlschema }}" class="csmall">{% include date.html date=page.date %}</time></p>
+            <div class="post-img-wrap">
+                <img src="{{ '/assets/img/blog/' | append: page.img | relative_url }}" alt="{{ page.title | strip_html }}" loading="lazy">
             </div>
 
             {{ content }}
 
             <div class="spacing"></div>
 
-            <!-- Utterances Comments -->
+            <!-- Comentarios (Utterances, respaldados por GitHub Issues) -->
             <script src="https://utteranc.es/client.js"
                     repo="cdrfiuba/cdrfiuba.github.io"
                     issue-term="pathname"
@@ -25,9 +24,8 @@ layout: default
                     crossorigin="anonymous"
                     async>
             </script>
-        </article><!-- /col-lg-8 -->
-        
-        {% include sidebar.html %}
+        </article>
 
-    </div><!-- /row -->
-</div><!-- /container -->
+        {% include sidebar.html %}
+    </div>
+</div>

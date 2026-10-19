@@ -1,17 +1,13 @@
 <section id="portfoliowrap">
-    <div class="portfolio-centered">
-        {% if include.title %}<h2>{{ include.title }}</h2>{% endif %}
-        <div class="recentitems portfolio">
-            {% for project in site.data.projects limit:include.limit %}
-                <div class="portfolio-item">
-                    <a href="{{ project.website }}" class="portfolio-link">
-                        <img src="{{ "/assets/img/project/" | prepend: site.baseurl }}{{ project.img }}" alt="{{ project.title }}" loading="lazy">
-                        <div class="portfolio-overlay">
-                            <h3>{{ project.title }}</h3>
-                        </div>
-                    </a>
-                </div><!-- end col-12 -->
-            {% endfor %}
-        </div><!-- portfolio -->
-    </div><!-- portfolio container -->
-</section><!--/Portfoliowrap -->
+    {% if include.title %}<h2>{{ include.title }}</h2>{% endif %}
+    <div class="portfolio">
+        {% for project in site.data.projects limit:include.limit %}
+            <a href="{{ project.website }}" class="portfolio-link">
+                <img src="{{ '/assets/img/project/' | append: project.img | relative_url }}" alt="{{ project.title }}" loading="lazy" width="600" height="450">
+                <div class="portfolio-overlay">
+                    <h3>{{ project.title }}</h3>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</section>

@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
-
     {% include head.html %}
-
-    <body class="{{ page.body_class }}{% for category in page.categories %} {{ category }}{% endfor %}">
+    <body>
         <a href="#main" class="visually-hidden-focusable">Ir al contenido principal</a>
         {% include nav.html %}
 

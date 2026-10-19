@@ -1,6 +1,4 @@
----
----
-/* Site styles */
+/* Estilos del sitio */
 
 :root {
   --color-primary: #00b3fe;
@@ -8,123 +6,95 @@
   --color-secondary: #384452;
   --color-link: #428bca;
   --color-link-hover: #01b2fe;
-  --color-footer-heading: #ffffff;
+  --color-muted: #b3b3b3;
   --color-footer-content: #bfc9d3;
+  --navbar-height: 70px;
 }
 
-/*	################################################################
-	1. GENERAL STRUCTURES
-################################################################# */
+/* ---------------------------------------------------------------
+   Base
+--------------------------------------------------------------- */
 
 body {
-	background: #ffffff;
-	margin: 0;
-	height: 100%;
-	color: var(--color-secondary);
-	font-family: 'Lato', sans-serif;
-	font-weight: 400;
-	}
+  background: #fff;
+  margin: 0;
+  padding-top: var(--navbar-height); /* deja lugar a la barra fija */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-secondary);
+  font-family: 'Lato', sans-serif;
+}
+
+main {
+  flex: 1; /* empuja el pie de página al fondo en páginas cortas */
+}
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Raleway', sans-serif;
-	font-weight: 700;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
 }
 
 p {
-	padding: 0;
-	margin-bottom: 12px;
-	font-family: 'Lato', sans-serif;
-	font-weight: 400;
-	font-size: 16px;
-	line-height: 1.6;
-	color: var(--color-secondary);
-	margin-top: 10px;
+  margin: 10px 0 12px;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 img {
-	height: auto;
-	max-width: 100%;
-}
-
-ul {
-    margin-left: 0;
-    padding-left: 20px;
-}
-
-ol {
-    margin-left: 0;
-    padding-left: 26px;
+  height: auto;
+  max-width: 100%;
 }
 
 a {
-    color: var(--color-link);
-    padding: 0;
-	margin: 0;
-	text-decoration: none;
-	transition: background-color .4s linear, color .4s linear;
+  color: var(--color-link);
+  text-decoration: none;
+  transition: background-color .4s linear, color .4s linear;
 }
 a:hover,
 a:focus {
-  text-decoration: none;
   color: var(--color-link-hover);
 }
 
-::-moz-selection  {
-	color: #fff;
-	text-shadow:none;
-	background: var(--color-secondary);
-}
 ::selection {
-	color: #fff;
-	text-shadow:none;
-	background: var(--color-secondary);
+  color: #fff;
+  background: var(--color-secondary);
 }
 
-.centered {
-	text-align: center;
-}
+/* ---------------------------------------------------------------
+   Ajustes de Bootstrap
+--------------------------------------------------------------- */
 
-/*	################################################################
-	BOOTSTRAP MODIFICATIONS & TWEAKS
-################################################################# */
 .navbar {
-	min-height: 70px;
-	padding-top: 10px;
-	margin-bottom: 0px;
-	background-color: var(--color-secondary);
-	border-color: transparent;
+  min-height: var(--navbar-height);
+  padding-top: 10px;
+  background-color: var(--color-secondary);
 }
 
-.navbar .navbar-brand {
-	font-family: 'Raleway', sans-serif;
-	font-weight: 900;
-	color: white;
+.navbar-brand {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 900;
+  color: #fff;
 }
 
 .navbar-nav .nav-link {
-	color: white;
-	font-weight: 700;
-	font-size: 12px;
-	text-transform: uppercase;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
 }
 
-.navbar-nav .nav-link:hover {
-	color: var(--color-primary);
-}
-
-.navbar-nav .active .nav-link,
-.navbar-nav .active .nav-link:hover,
-.navbar-nav .active .nav-link:focus {
-	color: var(--color-primary);
-	background-color: transparent;
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--color-primary);
 }
 
 .navbar-toggler {
-	border-color: rgba(255,255,255,0.3);
+  border-color: rgba(255, 255, 255, .3);
 }
 
 .navbar-toggler-icon {
-	filter: invert(1);
+  filter: invert(1);
 }
 
 .btn-theme {
@@ -135,282 +105,250 @@ a:focus {
 }
 .btn-theme:hover,
 .btn-theme:focus,
-.btn-theme:active,
-.btn-theme.active {
+.btn-theme:active {
   color: #fff;
   background-color: var(--color-primary);
   border-color: var(--color-primary);
 }
 
+/* ---------------------------------------------------------------
+   Utilidades
+--------------------------------------------------------------- */
 
 .mtb {
-	margin-top: 20px;
-	margin-bottom: 40px;
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
-.mb {
-	margin-bottom: 60px;
-}
-
-.mt {
-	margin-top: 60px;
+.spacing {
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .hline {
-	border-bottom: 2px solid var(--color-secondary);
+  border-bottom: 2px solid var(--color-secondary);
 }
 
 .hline-w {
-	border-bottom: 2px solid #ffffff;
-	margin-bottom: 25px;
+  border-bottom: 2px solid #fff;
+  margin-bottom: 25px;
 }
 
-/* Utility classes */
-.content-tight { margin-top: 0px !important; padding-top: 10px; }
-.content-flush { margin-top: 0px !important; padding-top: 0px; }
-.post-img-wrap { text-align: center; margin: 20px 0; }
-.post-img-wrap img { width: 100%; height: auto; }
-.novedades .post-img-wrap img { max-width: 400px; }
-.post-img-wrap--detail img { max-width: 500px; }
-.wrap-link { color: inherit; text-decoration: none; }
+.ctitle {
+  color: var(--color-primary);
+  margin-bottom: 15px;
+}
 
-/*	################################################################
-	SITE WRAPS
-################################################################# */
+.csmall {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.wrap-link {
+  color: inherit;
+}
+
+/* ---------------------------------------------------------------
+   Portada
+--------------------------------------------------------------- */
 
 #headerwrap {
-	background-color: var(--color-primary);
-	min-height: 0px;
-	padding-top: 80px;
-	padding-bottom: 30px;
-	text-align: center;
+  background-color: var(--color-primary);
+  padding: 10px 0 30px;
+  text-align: center;
+  color: #fff;
 }
 
-#headerwrap h3,
-#headerwrap h5 {
-	color: white;
-	font-weight: 400;
+#logo {
+  width: 45%;
+  max-width: 340px;
 }
 
-#headerwrap h1 {
-	color: white;
-	margin-bottom: 25px;
+#headerwrap .subtitle {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+  font-size: calc(1.3rem + .6vw);
+  line-height: 1.4;
+  margin-top: 8px;
 }
 
-#headerwrap .img-fluid {
-	margin: 0 auto;
-}
-
-/* Portfolio Wrap */
 #portfoliowrap {
-	padding-top: 60px;
-	margin-bottom: 60px;
-	display: block;
-	text-align: center;
+  padding-top: 60px;
+  margin-bottom: 60px;
+  text-align: center;
 }
 
 #portfoliowrap h2 {
-	margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 .portfolio {
-	padding:0 !important;
-	margin:0 !important;
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.portfolio-item {
-	width: 100%;
-	box-sizing: border-box;
-}
-
-@media (min-width: 401px) {
-	.portfolio-item { width: 50%; }
-}
-@media (min-width: 601px) {
-	.portfolio-item { width: 33.333%; }
-}
-@media (min-width: 951px) {
-	.portfolio-item { width: 25%; }
-}
-@media (min-width: 1201px) {
-	.portfolio-item { width: 20%; }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 45%), 1fr));
 }
 
 .portfolio-link {
-	display: block;
-	position: relative;
-	overflow: hidden;
+  display: block;
+  position: relative;
+  overflow: hidden;
 }
 
 .portfolio-link img {
-	display: block;
-	width: 100%;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
 }
 
 .portfolio-overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(var(--color-primary-rgb), 0.85);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	opacity: 0;
-	transition: opacity 0.3s ease;
+  position: absolute;
+  inset: 0;
+  background-color: rgba(var(--color-primary-rgb), .85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .3s ease;
 }
 
 .portfolio-link:hover .portfolio-overlay,
 .portfolio-link:focus-visible .portfolio-overlay {
-	opacity: 1;
+  opacity: 1;
 }
 
 .portfolio-overlay h3 {
-	color: #fff;
-	margin: 0;
-	padding: 0 10px;
-	font-size: 16px;
-	text-transform: uppercase;
-	text-align: center;
+  color: #fff;
+  margin: 0;
+  padding: 0 10px;
+  font-size: 16px;
+  text-transform: uppercase;
 }
 
-/* Footer */
-#footerwrap {
-	padding-top: 60px;
-	padding-bottom: 60px;
-	background: var(--color-secondary);
-}
-
-#footerwrap p, #footerwrap address {
-	color: var(--color-footer-content);
-}
-
-#footerwrap h4 {
-	color: var(--color-footer-heading);
-}
-
-#footerwrap .social-icon {
-	display: inline-block;
-	width: 30px;
-	height: 30px;
-	color: var(--color-footer-content);
-	margin-right: 25px;
-	vertical-align: middle;
-}
-
-#footerwrap a:hover .social-icon,
-#footerwrap a:focus-visible .social-icon {
-	color: var(--color-primary);
-}
-
-#footerwrap .footer-credit {
-	margin-top: 40px;
-	margin-bottom: 0;
-	font-size: 13px;
-	text-align: center;
-}
-
-/* Contact Page */
-#contactwrap {
-	background: url(../img/contact.jpg) no-repeat center top;
-	margin-top: -60px;
-	padding-top: 0px;
-	text-align: center;
-	background-position: center center;
-	min-height: 400px;
-	width: 100%;
-	background-size: cover;
-}
-
-/*	################################################################
-	PAGE CONFIGURATIONS
-################################################################# */
-/* General Tweaks */
+/* ---------------------------------------------------------------
+   Franja de título de las páginas internas
+--------------------------------------------------------------- */
 
 #blue {
-	background: var(--color-primary);
-	margin-top: 60px;
-	margin-bottom: 60px;
-	padding-top: 25px;
-	padding-bottom: 25px;
+  background: var(--color-primary);
+  padding: 25px 0;
 }
 
 #blue h1 {
-	color: white;
-	margin-bottom: 0;
+  color: #fff;
+  margin-bottom: 0;
 }
 
+/* ---------------------------------------------------------------
+   Novedades
+--------------------------------------------------------------- */
 
-.ctitle {
-	color: var(--color-primary);
-	font-weight: 700;
-	margin-bottom: 15px;
+.post-img-wrap {
+  text-align: center;
+  margin: 20px 0;
 }
 
-.csmall {
-	font-size: 12px;
-	color: #b3b3b3;
+.post-img-wrap img {
+  width: 100%;
+  max-width: 500px;
 }
 
-.spacing {
-	margin-top: 40px;
-	margin-bottom: 40px;
-}
-
-.badge-theme {
-	background: var(--color-primary);
-}
-
-/* Blog Page */
 .popular-posts {
-	margin: 0px;
-	padding-left: 0px;
-	}
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 
 .popular-posts li {
-	list-style: none;
-	margin-bottom: 20px;
-	min-height: 70px;
+  margin-bottom: 20px;
 }
-.popular-posts li a,
-.popular-posts li a:hover {
-	color:#2f2f2f;
-	text-decoration: none;
-	}
 
-.popular-posts li img {
-	float: left;
-	margin-right: 20px;
-	}
+.popular-posts li a {
+  color: inherit;
+}
 
 .popular-posts li em {
-	font-family: 'Lato', sans-serif;
-	font-size: 12px;
-	color: #b3b3b3;
-	}
+  font-size: 12px;
+  color: var(--color-muted);
+}
 
 .popular-posts p {
-	line-height: normal;
-	margin-bottom: auto;
+  line-height: normal;
+  margin-bottom: 0;
 }
 
-/* Reduce spacing for novedades pages */
-.novedades #blue {
-	margin-bottom: 15px !important;
+/* ---------------------------------------------------------------
+   Preguntas frecuentes
+--------------------------------------------------------------- */
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-/* Reduce spacing for preguntas frecuentes page */
-.preguntas-frecuentes #blue {
-	margin-bottom: 0px !important;
+.faq-container h2 {
+  font-size: 1.3em;
+  margin-top: 45px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0;
+  line-height: 1.4;
 }
 
-#logo {
-	width: 45%;
+.faq-container h2:first-child {
+  margin-top: 0;
 }
 
-.title {
-	font-weight: bold;
+.faq-container p {
+  font-size: 1.2em;
+  margin-bottom: 35px;
+}
+
+/* ---------------------------------------------------------------
+   Contacto
+--------------------------------------------------------------- */
+
+#contactwrap {
+  background: url(../img/contact.jpg) center / cover no-repeat;
+  min-height: 400px;
+}
+
+/* ---------------------------------------------------------------
+   Pie de página
+--------------------------------------------------------------- */
+
+#footerwrap {
+  padding: 60px 0;
+  background: var(--color-secondary);
+}
+
+#footerwrap p,
+#footerwrap address {
+  color: var(--color-footer-content);
+}
+
+#footerwrap h4 {
+  color: #fff;
+}
+
+.social-links {
+  display: flex;
+  gap: 25px;
+}
+
+.social-icon {
+  display: block;
+  width: 30px;
+  height: 30px;
+  color: var(--color-footer-content);
+}
+
+a:hover .social-icon,
+a:focus-visible .social-icon {
+  color: var(--color-primary);
+}
+
+.footer-credit {
+  margin-top: 40px;
+  margin-bottom: 0;
+  font-size: 13px;
+  text-align: center;
 }

@@ -1,3 +1,5 @@
+/* Calendario de actividades */
+
 .calendar-header {
     display: flex;
     justify-content: space-between;
@@ -11,13 +13,37 @@
     color: var(--color-primary);
 }
 
+.calendar-weekdays,
 #calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 1px;
+}
+
+.calendar-weekdays {
+    background-color: var(--color-secondary);
+    margin-bottom: 1px;
+}
+
+.weekday {
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.weekday-short {
+    display: none;
+}
+
+#calendar-grid {
     background-color: #bbb;
     border: 1px solid #bbb;
 }
+
+/* ---- Celdas ----
+   Los colores de fondo están ordenados de menor a mayor prioridad:
+   cursada < feriado < evento < evento cancelado. */
 
 .calendar-day {
     background-color: white;
@@ -26,12 +52,12 @@
     border: 1px solid #ccc;
     position: relative;
     cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
 .calendar-day:hover {
-    filter: brightness(0.9);
+    filter: brightness(0.92);
     transform: scale(1.02);
-    transition: all 0.2s ease;
 }
 
 .calendar-day.other-month {
@@ -39,29 +65,21 @@
     color: #999;
 }
 
-.calendar-day.other-month:hover {
-    background-color: #eeeeee !important;
-    filter: none;
+.calendar-day.period-lectures { background-color: #c8f5c8; }
+.calendar-day.period-exams    { background-color: #ffcdd2; }
+.calendar-day.period-special  { background-color: #e1bee7; }
+
+.calendar-day.holiday {
+    background-color: #ffecb3;
+    border-color: #ff9800;
+    box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
 }
 
-.calendar-day.other-month .day-number {
-    color: #999;
+.calendar-day.has-event {
+    background-color: #c5e3fd;
 }
 
-/* Highlight today's date */
-.calendar-day.today {
-    box-shadow: inset 0 0 0 2px var(--color-secondary);
-}
-
-.calendar-day.today .day-number::after {
-    content: ' · hoy';
-    font-size: 11px;
-    font-weight: normal;
-    color: var(--color-secondary);
-}
-
-
-.calendar-day.has-event:after {
+.calendar-day.has-event::after {
     content: '';
     position: absolute;
     bottom: 5px;
@@ -72,62 +90,18 @@
     border-radius: 50%;
 }
 
-/* Verde claro para días de cursada - lower priority than events */
-.calendar-day.period-lectures {
-    background-color: #c8f5c8;
+.calendar-day.special-event {
+    border: 2px solid #9c27b0;
+    box-shadow: 0 0 5px rgba(156, 39, 176, 0.3);
 }
-.calendar-day.period-lectures:hover {
-    background-color: #b0e6b0;
-    filter: none;
-}
-
-/* Rojo claro para semanas de evaluaciones integradoras - lower priority than events */
-.calendar-day.period-exams {
-    background-color: #ffcdd2;
-}
-.calendar-day.period-exams:hover {
-    background-color: #ffb3ba;
-    filter: none;
+.calendar-day.special-event::after {
+    background-color: #9c27b0;
+    width: 10px;
+    height: 10px;
 }
 
-/* Violeta para días de eventos especiales - lower priority than events */
-.calendar-day.period-special {
-    background-color: #e1bee7;
-}
-.calendar-day.period-special:hover {
-    background-color: #d1a3d8;
-    filter: none;
-}
-
-/* Holidays take highest precedence - bright red with gold border */
-.calendar-day.holiday {
-    background-color: #ffecb3 !important;
-    border: 1px solid #ff9800 !important;
-    box-shadow: 0 0 10px rgba(255, 152, 0, 0.5) !important;
-}
-.calendar-day.holiday:hover {
-    background-color: #ffd54f !important;
-    filter: none;
-}
-
-/* Events take precedence over periods */
-.calendar-day.has-event {
-    background-color: #c5e3fd !important;
-}
-.calendar-day.has-event:hover {
-    background-color: #a3d1f7 !important;
-    filter: none;
-}
-
-/* Cancelled event styling */
 .calendar-day.cancelled-event {
-    background-color: #ffcdd2 !important;
-    position: relative;
-}
-
-.calendar-day.cancelled-event:hover {
-    background-color: #ffb3ba !important;
-    filter: none;
+    background-color: #ffcdd2;
 }
 
 .calendar-day.cancelled-event::before {
@@ -147,23 +121,26 @@
     opacity: 0.7;
 }
 
-/* Special event highlighting */
-.calendar-day.special-event {
-    border: 2px solid #9c27b0;
-    box-shadow: 0 0 5px rgba(156, 39, 176, 0.3);
+.calendar-day.today {
+    box-shadow: inset 0 0 0 2px var(--color-secondary);
 }
-.calendar-day.special-event:after {
-    background-color: #9c27b0;
-    width: 10px;
-    height: 10px;
+
+.calendar-day.today .day-number::after {
+    content: ' · hoy';
+    font-size: 11px;
+    font-weight: normal;
+    color: var(--color-secondary);
 }
 
 .day-number {
     font-weight: bold;
     margin-bottom: 5px;
-    color: #333;
     position: relative;
     z-index: 2;
+}
+
+.other-month .day-number {
+    color: #999;
 }
 
 .event-preview {
@@ -186,12 +163,55 @@
     z-index: 2;
 }
 
+.tentative-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+    font-weight: bold;
+    color: rgba(255, 193, 7, 0.05);
+    z-index: 0;
+    pointer-events: none;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ---- Tooltip ---- */
+
+.calendar-tooltip {
+    position: absolute;
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-tooltip.show {
+    opacity: 1;
+}
+
+.calendar-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #333;
+}
+
+/* ---- Detalle del evento (modal) ---- */
+
 .event-details {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
 }
@@ -228,68 +248,38 @@
     color: #333;
 }
 
-.event-type {
+.event-item {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.event-item.cancelled h4 {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.event-type,
+.special-badge,
+.cancelled-badge {
     display: inline-block;
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
     margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
-.event-type.workshop { background-color: #4caf50; color: white; }
-.event-type.competition { background-color: #ff9800; color: white; }
-.event-type.lecture { background-color: #2196f3; color: white; }
-.event-type.hackathon { background-color: #9c27b0; color: white; }
-.event-type.meeting { background-color: #607d8b; color: white; }
-.event-type.presentation { background-color: #e91e63; color: white; }
-.event-type.exam { background-color: #f44336; color: white; }
-
-.calendar-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1px;
-    background-color: #2c3e50;
-    margin-bottom: 1px;
-}
-
-.weekday {
-    background-color: #2c3e50;
     color: white;
-    text-align: center;
-    padding: 10px;
-    font-weight: bold;
 }
 
-/* Tooltip styles */
-.calendar-tooltip {
-    position: absolute;
-    background-color: #333;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
-    z-index: 1000;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.calendar-tooltip.show {
-    opacity: 1;
-}
-
-.calendar-tooltip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: #333;
-}
+.event-type { text-transform: uppercase; }
+.event-type.workshop     { background-color: #4caf50; }
+.event-type.competition  { background-color: #ff9800; }
+.event-type.lecture      { background-color: #2196f3; }
+.event-type.hackathon    { background-color: #9c27b0; }
+.event-type.meeting      { background-color: #607d8b; }
+.event-type.presentation { background-color: #e91e63; }
+.event-type.exam         { background-color: #f44336; }
+.special-badge           { background-color: #9c27b0; }
+.cancelled-badge         { background-color: #f44336; }
 
 .period-info {
     background-color: #f0f0f0;
@@ -309,101 +299,25 @@
     font-size: 16px;
 }
 
-.special-badge {
-    display: inline-block;
-    background-color: #9c27b0;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    margin-bottom: 5px;
-}
+/* ---- Pantallas chicas ---- */
 
-/* Mobile responsiveness - fit to screen */
 @media (max-width: 768px) {
-    .calendar-day {
-        min-height: 60px;
-        padding: 4px;
-    }
-
-    .weekday {
-        padding: 8px 4px;
-        font-size: 12px;
-    }
-
-    .day-number {
-        font-size: 12px;
-        margin-bottom: 2px;
-    }
-
-    .event-preview {
-        font-size: 8px;
-        line-height: 1.0;
-        margin-top: 2px;
-    }
-
-    .calendar-header {
-        margin-bottom: 10px;
-    }
-
-    #current-month {
-        font-size: 18px;
-    }
+    .calendar-day { min-height: 60px; padding: 4px; }
+    .weekday { padding: 8px 4px; font-size: 12px; }
+    .day-number { font-size: 12px; margin-bottom: 2px; }
+    .event-preview { font-size: 8px; line-height: 1; margin-top: 2px; }
+    .calendar-header { margin-bottom: 10px; }
+    #current-month { font-size: 18px; }
+    .tentative-watermark { font-size: 70px; }
 }
 
 @media (max-width: 480px) {
-    .calendar-day {
-        min-height: 50px;
-        padding: 2px;
-    }
-
-    .weekday {
-        padding: 6px 2px;
-        font-size: 10px;
-    }
-
-    .day-number {
-        font-size: 11px;
-        margin-bottom: 1px;
-    }
-
-    .event-preview {
-        font-size: 7px;
-        line-height: 1.0;
-        margin-top: 1px;
-    }
-
-    #current-month {
-        font-size: 16px;
-    }
-}
-
-/* Tentative event styling */
-.calendar-day.tentative-event {
-    position: relative;
-}
-
-.tentative-watermark {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 100px;
-    font-weight: bold;
-    color: rgba(255, 193, 7, 0.05);
-    z-index: 0;
-    pointer-events: none;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-@media (max-width: 768px) {
-    .tentative-watermark {
-        font-size: 70px;
-    }
-}
-
-@media (max-width: 480px) {
-    .tentative-watermark {
-        font-size: 50px;
-    }
+    .calendar-day { min-height: 50px; padding: 2px; }
+    .weekday { padding: 6px 2px; font-size: 12px; }
+    .weekday-long { display: none; }
+    .weekday-short { display: inline; }
+    .day-number { font-size: 11px; margin-bottom: 1px; }
+    .event-preview { font-size: 7px; margin-top: 1px; }
+    #current-month { font-size: 16px; }
+    .tentative-watermark { font-size: 50px; }
 }

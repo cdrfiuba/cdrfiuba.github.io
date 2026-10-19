@@ -2,15 +2,9 @@
 layout: page
 title: Preguntas Frecuentes
 permalink: /preguntas_frecuentes/
-wrap_title: 'Preguntas Frecuentes'
-custom_css: preguntas_frecuentes
-body_class: preguntas-frecuentes
 ---
 
-<div class="container mtb content-flush">
-<div class="row">
-<div class="col-lg-12">
-<div class="spacing"></div>
+<div class="container mtb">
 <div class="faq-container" markdown="1">
 
 ## ¿Cómo puedo formar parte del Club?
@@ -38,7 +32,5 @@ Rotundo no. El Club es un espacio para aprender y hacer.
 Tampoco es necesario; el Club es un espacio abierto.
 Si bien es cierto que la mayoría de los miembros son estudiantes o graduados de FIUBA y es más sencillo para estudiantes acercarse a formar parte porque simplifica el acceso al laboratorio y demás cuestiones administrativas, no es un requisito.
 
-</div>
-</div>
 </div>
 </div>

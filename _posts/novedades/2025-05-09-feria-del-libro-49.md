@@ -1,7 +1,6 @@
 ---
 layout: post
-title: "Novedades"
-post_title: "El Club de Robótica participó de la 49.<sup>a</sup> edición de la Feria del Libro"
+title: "El Club de Robótica participó de la 49.<sup>a</sup> edición de la Feria del Libro"
 date: 2025-05-09 09:08:00
 author: Club de Robótica
 categories:

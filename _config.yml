@@ -15,3 +15,11 @@ excerpt_separator: <!--more--> #use this in posts to define how long the excerpt
 
 include:
   - _pages
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - CODEOWNERS
+  - vendor
+  - .bundle

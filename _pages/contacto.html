@@ -11,23 +11,18 @@ permalink: /contacto/
         <div class="col-lg-8">
             <h4>¡Unite!</h4>
             <div class="hline" aria-hidden="true"></div>
-              {% for line in site.data.about %}
+            {% for line in site.data.about %}
                 <p>{{ line }}</p>
-              {% endfor %}
-              <p>
+            {% endfor %}
+            <p>
                 Nos reunimos los viernes en el <a href="https://labi.fi.uba.ar">LABi</a>, un laboratorio abierto en el 1.<sup>er</sup> piso de la sede Paseo Colón de la Facultad de Ingeniería de la Universidad de Buenos Aires.
-              </p>
-        </div><!-- /col-lg-8 -->
+            </p>
+        </div>
 
         <div class="col-lg-4">
             <h4>Nuestra dirección</h4>
             <div class="hline" aria-hidden="true"></div>
-                <address>
-                    {% for line in site.data.contact.address.first.lines %}
-                        {{ line }} <br>
-                    {% endfor %}
-                    Email: <a href="mailto:{{ site.data.contact.email }}">{{ site.data.contact.email }}</a>
-                </address>
+            {% include address.html %}
         </div>
-    </div><!-- /row -->
-</div><!-- /container -->
+    </div>
+</div>

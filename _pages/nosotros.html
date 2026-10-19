@@ -7,15 +7,14 @@ permalink: /nosotros/
 <div class="container mtb">
     <div class="row">
         <div class="col-lg-8">
-            <img class="img-fluid" src="{{ "/assets/img/team2015.jpg" | prepend: site.baseurl }}" alt="Equipo CDR FIUBA" loading="lazy">
+            <img class="img-fluid" src="{{ '/assets/img/team2015.jpg' | relative_url }}" alt="Equipo CDR FIUBA" loading="lazy" width="1000" height="662">
         </div>
         <div class="col-lg-4">
             <h4>Conozca el Club</h4>
-
             {% for line in site.data.about %}
                 <p>{{ line }}</p>
             {% endfor %}
-            <p><br/><a href="/contacto/" class="btn btn-theme">Contacto</a></p>
+            <p><a href="{{ '/contacto/' | relative_url }}" class="btn btn-theme">Contacto</a></p>
         </div>
-    </div><!-- /row -->
-</div><!-- /container -->
+    </div>
+</div>

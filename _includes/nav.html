@@ -1,9 +1,8 @@
 <nav class="navbar navbar-expand-md fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="{{ "/" | prepend: site.baseurl }}">{{ site.title }}</a>
+    <a class="navbar-brand" href="{{ '/' | relative_url }}">{{ site.title }}</a>
     <button class="navbar-toggler" type="button"
-            data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="visually-hidden">Toggle navigation</span>
+            data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Abrir menú">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="navbar-collapse collapse" id="navbarNav">
@@ -12,16 +11,17 @@
           {% assign is_active = false %}
           {% if item.url == "/" %}
             {% if page.url == "/" %}{% assign is_active = true %}{% endif %}
-          {% elsif item.external != true %}
-            {% if page.url contains item.url %}{% assign is_active = true %}{% endif %}
+          {% elsif item.external != true and page.url contains item.url %}
+            {% assign is_active = true %}
           {% endif %}
-          <li class="nav-item{% if is_active %} active{% endif %}">
-            <a class="nav-link" href="{% if item.external %}{{ item.url }}{% else %}{{ item.url | prepend: site.baseurl }}{% endif %}"
+          <li class="nav-item">
+            <a class="nav-link{% if is_active %} active{% endif %}"
+               href="{% if item.external %}{{ item.url }}{% else %}{{ item.url | relative_url }}{% endif %}"
                {% if item.external %}rel="noopener noreferrer"{% endif %}
                {% if is_active %}aria-current="page"{% endif %}>{{ item.title }}</a>
           </li>
         {% endfor %}
       </ul>
-    </div><!--/.nav-collapse -->
+    </div>
   </div>
 </nav>
